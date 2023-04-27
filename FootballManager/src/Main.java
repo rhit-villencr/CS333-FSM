@@ -1,43 +1,40 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Base64;
+import java.util.Properties;
 import java.util.Scanner;
 import fsm.frame.Frame;
 import fsm.services.DatabaseConnectionService;
 
 public class Main {
-
-	///// Developer Bool
-	static boolean useLogin = true;
-	/////
-
-	///// Username and password variables
-	static String username;
-	static String password;
-	/////
-
-	/* Method attempts to log in, if failed, increases fail counter */
-	public static int attemptLogin(int attempts, String databaseName) {
-		@SuppressWarnings("resource")
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter the username for " + databaseName + ": ");
-		username = sc.nextLine();
-		System.out.println("Enter the password for " + databaseName + ": ");
-		password = sc.nextLine();
-		attempts++;
-		return attempts;
-	}
-
 	public static void main(String[] args) {
-		///// Temporarily initialize database settings
-		String serverName = "titan.csse.rose-hulman.edu";
-		String databaseName = "FootBall_Statistics_Manager";
-		username = "FSMOwner";
-		password = "Password123";
+		///// Declare variables
+		String serverName = "";
+		String databaseName = "";
+		String username = "";
+		String password = "";
 		/////
 
-		///// First login attempt
-//		int numAtt = 0;
-//		if (useLogin) {
-//			numAtt = attemptLogin(0, databaseName);
-//		}
+		///// Load variables from properties file
+		try {
+			String filePath = new File("").getAbsolutePath();
+			filePath += "\\src\\fsm.properties";
+			InputStream input = new FileInputStream(filePath);
+			Properties prop = new Properties();
+
+			// load a properties file
+			prop.load(input);
+
+			// get the property value and print it out
+			serverName = (String) prop.getProperty("serverName");
+			databaseName = (String) prop.getProperty("databaseName");
+			username = (String) prop.getProperty("serverUsername");
+			password = (String) prop.getProperty("serverPassword");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 		/////
 
 		///// Initialize DatabaseConnectionService class
@@ -45,22 +42,15 @@ public class Main {
 		/////
 
 		///// Attempt to connect, if failed, abort
-		while (true) {
-			try {
-				connection.connect(username, password);
-				System.out.println("Successfully Connected To: " + databaseName);
-				break;
+		try {
+			connection.connect(username, password);
+			System.out.println("Successfully Connected To: " + databaseName);
 
-			} catch (Exception e) {
-				System.out.println("Failed Connection To: " + databaseName);
-//				numAtt = attemptLogin(numAtt, databaseName);
-//				if (numAtt >= 3) {
-//					System.out.println("Too many failed login attempts...\nShutting Down...");
-//					System.exit(0);
-//				}
-
-			}
+		} catch (Exception e) {
+			System.out.println("Failed Connection To: " + databaseName);
+			System.exit(0);
 		}
+
 		/////
 
 		///// Create new frame and run the startup function
@@ -68,5 +58,4 @@ public class Main {
 		frame.launchLogin(connection);
 		/////
 	}
-
 }

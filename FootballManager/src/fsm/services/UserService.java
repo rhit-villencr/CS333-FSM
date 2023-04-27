@@ -21,6 +21,7 @@ public class UserService {
 	private static final Random RANDOM = new SecureRandom();
 	private static final Base64.Encoder enc = Base64.getEncoder();
 	private static final Base64.Decoder dec = Base64.getDecoder();
+
 	private DatabaseConnectionService dbService = null;
 
 	public UserService(DatabaseConnectionService dbService) {
