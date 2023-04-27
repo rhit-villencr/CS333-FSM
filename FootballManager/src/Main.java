@@ -5,7 +5,7 @@ import fsm.services.DatabaseConnectionService;
 public class Main {
 
 	///// Developer Bool
-	static boolean useLogin = false;
+	static boolean useLogin = true;
 	/////
 
 	///// Username and password variables
@@ -34,10 +34,10 @@ public class Main {
 		/////
 
 		///// First login attempt
-		int numAtt = 0;
-		if (useLogin) {
-			numAtt = attemptLogin(0, databaseName);
-		}
+//		int numAtt = 0;
+//		if (useLogin) {
+//			numAtt = attemptLogin(0, databaseName);
+//		}
 		/////
 
 		///// Initialize DatabaseConnectionService class
@@ -53,11 +53,11 @@ public class Main {
 
 			} catch (Exception e) {
 				System.out.println("Failed Connection To: " + databaseName);
-				numAtt = attemptLogin(numAtt, databaseName);
-				if (numAtt >= 3) {
-					System.out.println("Too many failed login attempts...\nShutting Down...");
-					System.exit(0);
-				}
+//				numAtt = attemptLogin(numAtt, databaseName);
+//				if (numAtt >= 3) {
+//					System.out.println("Too many failed login attempts...\nShutting Down...");
+//					System.exit(0);
+//				}
 
 			}
 		}

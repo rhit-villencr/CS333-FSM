@@ -22,7 +22,8 @@ public class SQLDatabaseResult {
 			ArrayList<String> resultString = new ArrayList<String>();
 			ResultSet tables = metaData.getTables(null, null, "%", types);
 			while (tables.next()) {
-				if (!tables.getString("TABLE_NAME").contains("trace_xe")
+				if ((!tables.getString("TABLE_NAME").contains("trace_xe")
+						&& !tables.getString("TABLE_NAME").contains("User"))
 						&& (!(getResult(connection, tables.getString("TABLE_NAME")).length == 0) || useEmpty)) {
 					resultString.add(tables.getString("TABLE_NAME"));
 				}
@@ -55,7 +56,7 @@ public class SQLDatabaseResult {
 			ResultSet rs = statement.executeQuery(selectSql);
 			/////
 
-			///// Convert data into array list of column headers
+			///// Convert data into array list
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			while (rs.next()) {
 				ArrayList<String> temp = new ArrayList<String>();
