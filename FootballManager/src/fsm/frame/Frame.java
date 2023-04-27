@@ -13,6 +13,8 @@ import java.awt.event.WindowEvent;
 import java.util.Vector;
 import fsm.services.DatabaseConnectionService;
 import fsm.services.SQLDatabaseResult;
+import fsm.services.UserService;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -39,7 +41,12 @@ public class Frame {
 	}
 
 	/* Starts the code */
-	public void launch(DatabaseConnectionService con) {
+	public void launchLogin(DatabaseConnectionService con) {
+		loginFrame(con);
+	}
+
+	/* will start the table view frame */
+	public void launchView(DatabaseConnectionService con) {
 
 		///// Checks if any nonempty tables exist
 		String[] NET = SQLDatabaseResult.getTables(con, useEmpty);
@@ -50,6 +57,86 @@ public class Frame {
 			System.exit(1);
 		}
 		/////
+	}
+
+	/* starts the login JFrame */
+	public void loginFrame(DatabaseConnectionService con) {
+		UserService serv = new UserService(con);
+
+		///// Removing possible old values
+		frame.dispose();
+		frame = new JFrame();
+		/////
+
+		///// Initializing out connection to the given one
+		DatabaseConnectionService dcs = con;
+		/////
+
+		///// Initializing componenets and setting the echochar to "*"
+		JTextField user = new JTextField(8);
+		JPasswordField pass = new JPasswordField(8);
+		JButton login = new JButton("Login");
+		JButton register = new JButton("Register");
+		JCheckBox showPass = new JCheckBox("Show Password", false);
+		JLabel userText = new JLabel("Enter Username: ");
+		JLabel passText = new JLabel("Enter Password: ");
+		Box textField = Box.createVerticalBox();
+		JPanel buttons = new JPanel();
+		pass.setEchoChar('*');
+		/////
+
+		///// A bunch of action listeners
+		login.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (serv.login(user.getText(), pass.getText())) {
+					System.out.println("Login Successful");
+					launchView(con);
+				}
+				user.setText("");
+				pass.setText("");
+			}
+		});
+
+		register.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (serv.register(user.getText(), pass.getText())) {
+					System.out.println("Register Successful");
+					launchView(con);
+				}
+				user.setText("");
+				pass.setText("");
+			}
+		});
+
+		showPass.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (showPass.isSelected()) {
+					pass.setEchoChar((char) 0);
+				} else {
+					pass.setEchoChar('*');
+				}
+			}
+		});
+		/////
+
+		///// Adding components to the JPanels
+		buttons.add(login);
+		buttons.add(register);
+		textField.add(userText);
+		textField.add(user);
+		textField.add(passText);
+		textField.add(pass);
+		textField.add(showPass);
+		/////
+
+		///// Adding JPanels to the JFrame
+		frame.add(textField, BorderLayout.NORTH);
+		frame.add(buttons, BorderLayout.SOUTH);
+		/////
+
+		formatFrame(dcs);
+
 	}
 
 	/* Will refresh the JFrame with whatever table in inserted */
@@ -170,13 +257,18 @@ public class Frame {
 		frame.add(topPnl, BorderLayout.NORTH);
 		/////
 
+		formatFrame(dcs);
+
+	}
+
+	public void formatFrame(DatabaseConnectionService con) {
 		///// Adding a bunch of JFrame setting to make it look better
 		frame.setTitle(tableName);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {
-				dcs.closeConnection();
+				con.closeConnection();
 				frame.dispose();
 				System.exit(0);
 			}
@@ -186,7 +278,6 @@ public class Frame {
 		frame.setAlwaysOnTop(true);
 		frame.setAlwaysOnTop(false);
 		/////
-
 	}
 
 	/* Function to get the width of a given header of a table */

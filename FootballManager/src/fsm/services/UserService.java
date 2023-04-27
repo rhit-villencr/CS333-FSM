@@ -37,7 +37,7 @@ public class UserService {
 		Connection con = this.dbService.getConnection();
 
 		try {
-			String query = "SELECT PasswordSalt, PasswordHash\nFROM [User]\nWHERE Username = ?";
+			String query = "SELECT PasswordSalt, PasswordHash\nFROM [Users]\nWHERE Username = ?";
 			PreparedStatement checkPass = con.prepareStatement(query);
 			checkPass.setString(1, username);
 			ResultSet rs = checkPass.executeQuery();
