@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Vector;
@@ -18,8 +20,10 @@ import javax.swing.table.TableColumn;
 
 public class Frame {
 
-	///// Initialize a JFrame
+	///// Initialize globals
 	JFrame frame = new JFrame();
+	boolean useEmpty = false;
+	String tableName;
 	/////
 
 	/* Method that will take a 2 dimensional string and print it */
@@ -38,9 +42,10 @@ public class Frame {
 	public void launch(DatabaseConnectionService con) {
 
 		///// Checks if any nonempty tables exist
-		String[] NET = SQLDatabaseResult.getNonEmptyTables(con);
+		String[] NET = SQLDatabaseResult.getTables(con, useEmpty);
 		if (NET.length != 0) {
-			viewTable(NET[0], con);
+			tableName = NET[0];
+			viewTable(tableName, con);
 		} else {
 			System.exit(1);
 		}
@@ -60,7 +65,7 @@ public class Frame {
 		/////
 
 		///// To create the dropdown menu
-		String[] choices = SQLDatabaseResult.getNonEmptyTables(con);
+		String[] choices = SQLDatabaseResult.getTables(con, useEmpty);
 		JComboBox<String> cb = new JComboBox<String>(choices);
 		cb.setSelectedItem((Object) tableName);
 
@@ -80,6 +85,18 @@ public class Frame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Refreshed " + tableName + " table.");
+				viewTable(tableName, dcs);
+			}
+		});
+		/////
+
+		///// Create check box to say if want empties
+		JCheckBox jcb = new JCheckBox("Show Empty tables?", useEmpty);
+		jcb.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				useEmpty = (e.getStateChange() == ItemEvent.SELECTED);
 				viewTable(tableName, dcs);
 			}
 		});
@@ -120,7 +137,7 @@ public class Frame {
 		for (var = 0; var < table.getColumnCount(); var++) {
 			l_Col = table.getColumn(table.getColumnName(var));
 			width = columnHeaderWidth(table, l_Col) + 6;
-			l_Col.setMinWidth(100);
+			l_Col.setMinWidth(150);
 			l_Col.setMaxWidth(width);
 		}
 		/////
@@ -129,14 +146,17 @@ public class Frame {
 		frame.setLayout(new BorderLayout());
 		JPanel topPnl = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JPanel refreshBtnPnl = new JPanel();
+		JPanel checkboxPnl = new JPanel();
 		JPanel dropdownPnl = new JPanel();
 		/////
 
 		///// Adding components to all the panels
 		refreshBtnPnl.add(refresh);
 		dropdownPnl.add(cb);
+		checkboxPnl.add(jcb);
 		topPnl.add(refreshBtnPnl, BorderLayout.WEST);
-		topPnl.add(dropdownPnl, BorderLayout.EAST);
+		topPnl.add(dropdownPnl, BorderLayout.CENTER);
+		topPnl.add(checkboxPnl, BorderLayout.EAST);
 		/////
 
 		///// Making it so you cannot edit the values in the table or change the order

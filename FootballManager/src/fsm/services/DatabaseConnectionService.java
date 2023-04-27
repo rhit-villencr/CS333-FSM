@@ -6,45 +6,50 @@ import java.sql.SQLException;
 
 public class DatabaseConnectionService {
 
-	// DO NOT EDIT THIS STRING, YOU WILL RECEIVE NO CREDIT FOR THIS TASK IF THIS
-	// STRING IS EDITED
+	///// Globals
 	private final String SampleURL = "jdbc:sqlserver://${dbServer};databaseName=${dbName};user=${user};password={${pass}}";
-
 	private Connection connection = null;
-
 	public String databaseName;
 	private String serverName;
 	private String username;
 	private String password;
+	/////
 
+	/* Initialization */
 	public DatabaseConnectionService(String serverName, String databaseName) {
-		// DO NOT CHANGE THIS METHOD
 		this.serverName = serverName;
 		this.databaseName = databaseName;
 	}
 
+	/* Connect to database */
 	public boolean connect(String user, String pass) throws Exception {
-		// TODO: Task 1
-		// BUILD YOUR CONNECTION STRING HERE USING THE SAMPLE URL ABOVE
+
+		///// Set vars
 		username = user;
 		password = pass;
 		String connectionUrl = SampleURL.replace("${dbServer}", serverName).replace("${dbName}", databaseName)
 				.replace("${user}", user).replace("${pass}", pass);
-//		System.out.println(connectionUrl);
+		/////
+
+		///// Attempt connection
 		try {
 			connection = DriverManager.getConnection(connectionUrl);
 			return true;
 		}
-		// Handle any errors that may have occurred.
+		/////
+
+		/* if fails */
 		catch (SQLException e) {
 			throw new Exception();
 		}
 	}
 
+	/* getter for connection */
 	public Connection getConnection() {
 		return this.connection;
 	}
 
+	/* Disconnect from database */
 	public void closeConnection() {
 		// TODO: Task 1
 		try {
@@ -57,6 +62,7 @@ public class DatabaseConnectionService {
 		}
 	}
 
+	/* Unused: quickly disconnect and then reconnect */
 	public void refreshConnection() throws Exception {
 		closeConnection();
 		connect(username, password);

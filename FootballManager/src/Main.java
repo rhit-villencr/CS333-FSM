@@ -4,6 +4,10 @@ import fsm.services.DatabaseConnectionService;
 
 public class Main {
 
+	///// Developer Bool
+	static boolean useLogin = false;
+	/////
+
 	///// Username and password variables
 	static String username;
 	static String password;
@@ -25,12 +29,15 @@ public class Main {
 		///// Temporarily initialize database settings
 		String serverName = "titan.csse.rose-hulman.edu";
 		String databaseName = "FootBall_Statistics_Manager";
-		// String username = "FSMOwner";
-		// String password = "Password123";
+		username = "FSMOwner";
+		password = "Password123";
 		/////
 
 		///// First login attempt
-		int numAtt = attemptLogin(0, databaseName);
+		int numAtt = 0;
+		if (useLogin) {
+			numAtt = attemptLogin(0, databaseName);
+		}
 		/////
 
 		///// Initialize DatabaseConnectionService class

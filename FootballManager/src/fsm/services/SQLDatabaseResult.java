@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class SQLDatabaseResult {
 
 	/* Returns a 1d array of all nonempty table names in the given database */
-	public static String[] getNonEmptyTables(DatabaseConnectionService connection) {
+	public static String[] getTables(DatabaseConnectionService connection, boolean useEmpty) {
 		try {
 			///// Initialize variables
 			DatabaseMetaData metaData = connection.getConnection().getMetaData();
@@ -23,7 +23,7 @@ public class SQLDatabaseResult {
 			ResultSet tables = metaData.getTables(null, null, "%", types);
 			while (tables.next()) {
 				if (!tables.getString("TABLE_NAME").contains("trace_xe")
-						&& !(getResult(connection, tables.getString("TABLE_NAME")).length == 0)) {
+						&& (!(getResult(connection, tables.getString("TABLE_NAME")).length == 0) || useEmpty)) {
 					resultString.add(tables.getString("TABLE_NAME"));
 				}
 			}
