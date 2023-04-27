@@ -20,11 +20,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 public class Frame {
-	
-	/////Initialize a JFrame
+
+	///// Initialize a JFrame
 	JFrame frame = new JFrame();
 	/////
-	
+
 	/* Method that will take a 2 dimensional string and print it */
 	public void printTable(String[][] data) {
 		for (int i = 0; i < data.length; i++) {
@@ -37,14 +37,14 @@ public class Frame {
 
 	}
 
-	// Starts the code
+	/* Starts the code */
 	public void launch(DatabaseConnectionService con) {
-		
-		/////Checks if any nonempty tables exist
+
+		///// Checks if any nonempty tables exist
 		String[] NET = SQLDatabaseResult.getNonEmptyTables(con.getConnection());
-		if(NET.length != 0) {
+		if (NET.length != 0) {
 			viewTable(NET[0], con);
-		}else {
+		} else {
 			System.exit(1);
 		}
 		/////
