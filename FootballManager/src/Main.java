@@ -5,37 +5,29 @@ import fsm.services.SQLDatabaseResult;
 public class Main {
 
 	public static void main(String[] args) {
+		/////Temporarily initialize database settings
 		String serverName = "titan.csse.rose-hulman.edu";
 		String databaseName = "FootBall_Statistics_Manager";
 		String username = "FSMOwner";
 		String password = "Password123";
+		/////
 		
+		/////Initialize DatabaseConnectionService class
 		DatabaseConnectionService connection = new DatabaseConnectionService(serverName, databaseName);
+		/////
 		
+		/////Attempt to connect, if failed, abort
 		if(!connection.connect(username, password)) {
-			System.out.println("failed Connection To: " + databaseName + "\n");
-			return;
+			System.out.println("failed Connection To: " + databaseName);
+			System.exit(0);
 		}
-		System.out.println("Successfully Connected To: " + databaseName + "\n");
-//		System.out.println(connection.getConnection());
+		System.out.println("Successfully Connected To: " + databaseName);
+		/////
 		
+		/////Create new frame and run the startup function
 		Frame frame = new Frame();
-		
-		frame.viewTable("Person", connection);
-//		try {
-//			Thread.sleep(5000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		frame.viewTable("Player");
-//		try {
-//			Thread.sleep(5000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		frame.viewTable("Team");
+		frame.launch(connection);
+		/////
 	}
 
 }
