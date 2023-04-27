@@ -33,7 +33,6 @@ public class UserService {
 	}
 
 	public boolean login(String username, String password) {
-		// TODO: Complete this method.
 		Connection con = this.dbService.getConnection();
 
 		try {

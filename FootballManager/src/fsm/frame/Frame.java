@@ -59,6 +59,14 @@ public class Frame {
 		/////
 	}
 
+	/* method to convert a char array to a string */
+	public static String charToString(char[] a) {
+		// Creating object of String class
+		String string = new String(a);
+
+		return string;
+	}
+
 	/* starts the login JFrame */
 	public void loginFrame(DatabaseConnectionService con) {
 		UserService serv = new UserService(con);
@@ -88,7 +96,7 @@ public class Frame {
 		///// A bunch of action listeners
 		login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (serv.login(user.getText(), pass.getText())) {
+				if (serv.login(user.getText(), charToString(pass.getPassword()))) {
 					System.out.println("Login Successful");
 					launchView(con);
 				}
@@ -99,7 +107,7 @@ public class Frame {
 
 		register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (serv.register(user.getText(), pass.getText())) {
+				if (serv.register(user.getText(), charToString(pass.getPassword()))) {
 					System.out.println("Register Successful");
 					launchView(con);
 				}
