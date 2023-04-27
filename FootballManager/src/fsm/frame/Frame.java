@@ -8,9 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Vector;
 import fsm.services.DatabaseConnectionService;
 import fsm.services.SQLDatabaseResult;
@@ -41,7 +38,7 @@ public class Frame {
 	public void launch(DatabaseConnectionService con) {
 
 		///// Checks if any nonempty tables exist
-		String[] NET = SQLDatabaseResult.getNonEmptyTables(con.getConnection());
+		String[] NET = SQLDatabaseResult.getNonEmptyTables(con);
 		if (NET.length != 0) {
 			viewTable(NET[0], con);
 		} else {
@@ -63,7 +60,7 @@ public class Frame {
 		/////
 
 		///// To create the dropdown menu
-		String[] choices = SQLDatabaseResult.getNonEmptyTables(con.getConnection());
+		String[] choices = SQLDatabaseResult.getNonEmptyTables(con);
 		JComboBox<String> cb = new JComboBox<String>(choices);
 		cb.setSelectedItem((Object) tableName);
 
@@ -106,7 +103,7 @@ public class Frame {
 		/////
 
 		///// Inputting collected data into the table
-		Object[][] result = SQLDatabaseResult.getResult(dcs.getConnection(), tableName);
+		Object[][] result = SQLDatabaseResult.getResult(dcs, tableName);
 		Vector<Object> newRow;
 		for (int i = 0; i < result.length; i++) {
 			newRow = new Vector<Object>();
@@ -153,7 +150,7 @@ public class Frame {
 		frame.add(topPnl, BorderLayout.NORTH);
 		/////
 
-		///// Adding a bunch of JFrame setting to make it look good
+		///// Adding a bunch of JFrame setting to make it look better
 		frame.setTitle(tableName);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
@@ -164,9 +161,10 @@ public class Frame {
 				System.exit(0);
 			}
 		});
-		;
 		frame.pack();
 		frame.setVisible(true);
+		frame.setAlwaysOnTop(true);
+		frame.setAlwaysOnTop(false);
 		/////
 
 	}

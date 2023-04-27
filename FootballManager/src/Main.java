@@ -1,15 +1,36 @@
+import java.util.Scanner;
 import fsm.frame.Frame;
 import fsm.services.DatabaseConnectionService;
-import fsm.services.SQLDatabaseResult;
 
 public class Main {
+
+	///// Username and password variables
+	static String username;
+	static String password;
+	/////
+
+	/* Method attempts to log in, if failed, increases fail counter */
+	public static int attemptLogin(int attempts, String databaseName) {
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the username for " + databaseName + ": ");
+		username = sc.nextLine();
+		System.out.println("Enter the password for " + databaseName + ": ");
+		password = sc.nextLine();
+		attempts++;
+		return attempts;
+	}
 
 	public static void main(String[] args) {
 		///// Temporarily initialize database settings
 		String serverName = "titan.csse.rose-hulman.edu";
 		String databaseName = "FootBall_Statistics_Manager";
-		String username = "FSMOwner";
-		String password = "Password123";
+		// String username = "FSMOwner";
+		// String password = "Password123";
+		/////
+
+		///// First login attempt
+		int numAtt = attemptLogin(0, databaseName);
 		/////
 
 		///// Initialize DatabaseConnectionService class
@@ -17,11 +38,22 @@ public class Main {
 		/////
 
 		///// Attempt to connect, if failed, abort
-		if (!connection.connect(username, password)) {
-			System.out.println("failed Connection To: " + databaseName);
-			System.exit(0);
+		while (true) {
+			try {
+				connection.connect(username, password);
+				System.out.println("Successfully Connected To: " + databaseName);
+				break;
+
+			} catch (Exception e) {
+				System.out.println("Failed Connection To: " + databaseName);
+				numAtt = attemptLogin(numAtt, databaseName);
+				if (numAtt >= 3) {
+					System.out.println("Too many failed login attempts...\nShutting Down...");
+					System.exit(0);
+				}
+
+			}
 		}
-		System.out.println("Successfully Connected To: " + databaseName);
 		/////
 
 		///// Create new frame and run the startup function

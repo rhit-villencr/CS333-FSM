@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.Base64;
 import java.util.Random;
@@ -37,30 +36,30 @@ public class UserService {
 		// TODO: Complete this method.
 		Connection con = this.dbService.getConnection();
 
-	    try {
-	        String query = "SELECT PasswordSalt, PasswordHash\nFROM [User]\nWHERE Username = ?";
-	        PreparedStatement checkPass = con.prepareStatement(query);
-	        checkPass.setString(1, username);
-	        ResultSet rs = checkPass.executeQuery(); 
-	        
-	        if (rs.next()) { 
-	            byte[] testSalt = dec.decode(rs.getString("PasswordSalt"));
-	            String testHash = rs.getString("PasswordHash");
-	            String hashedSalt = hashPassword(testSalt, password);
-	            if (!testHash.equals(hashedSalt)) {
-	                JOptionPane.showMessageDialog(null, "Login Failed");
-	                return false;
-	            }
-	            return true;
-	        } else { 
-	            JOptionPane.showMessageDialog(null, "Login Failed");
-	            return false;
-	        }
-	    } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Login Error");
-	        e.printStackTrace();
-	        return false;
-	    }
+		try {
+			String query = "SELECT PasswordSalt, PasswordHash\nFROM [User]\nWHERE Username = ?";
+			PreparedStatement checkPass = con.prepareStatement(query);
+			checkPass.setString(1, username);
+			ResultSet rs = checkPass.executeQuery();
+
+			if (rs.next()) {
+				byte[] testSalt = dec.decode(rs.getString("PasswordSalt"));
+				String testHash = rs.getString("PasswordHash");
+				String hashedSalt = hashPassword(testSalt, password);
+				if (!testHash.equals(hashedSalt)) {
+					JOptionPane.showMessageDialog(null, "Login Failed");
+					return false;
+				}
+				return true;
+			} else {
+				JOptionPane.showMessageDialog(null, "Login Failed");
+				return false;
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Login Error");
+			e.printStackTrace();
+			return false;
+		}
 
 	}
 

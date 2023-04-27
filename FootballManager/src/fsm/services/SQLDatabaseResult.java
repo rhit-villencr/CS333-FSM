@@ -1,21 +1,19 @@
 package fsm.services;
 
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class SQLDatabaseResult {
 
 	/* Returns a 1d array of all nonempty table names in the given database */
-	public static String[] getNonEmptyTables(Connection connection) {
+	public static String[] getNonEmptyTables(DatabaseConnectionService connection) {
 		try {
 			///// Initialize variables
-			DatabaseMetaData metaData = connection.getMetaData();
+			DatabaseMetaData metaData = connection.getConnection().getMetaData();
 			String[] types = { "TABLE" };
 			/////
 
@@ -48,11 +46,11 @@ public class SQLDatabaseResult {
 	}
 
 	/* Returns a 2d array of the contents of a given table in a given database */
-	public static Object[][] getResult(Connection connection, String table) {
+	public static Object[][] getResult(DatabaseConnectionService connection, String table) {
 		try {
 			///// Creating a query and querying the database
 			// TODO:Prevent SQL Injection Attacks
-			Statement statement = connection.createStatement();
+			Statement statement = connection.getConnection().createStatement();
 			String selectSql = "SELECT * from " + table;
 			ResultSet rs = statement.executeQuery(selectSql);
 			/////
@@ -60,8 +58,11 @@ public class SQLDatabaseResult {
 			///// Convert data into array list of column headers
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			while (rs.next()) {
-				data.add(new ArrayList<>(
-						Arrays.asList(rs.getString(1), rs.getString(3), rs.getString(2), rs.getString(4))));
+				ArrayList<String> temp = new ArrayList<String>();
+				for (int i = 0; i < getHeaders(connection, table).length; i++) {
+					temp.add(rs.getString(i + 1));
+				}
+				data.add(temp);
 			}
 			/////
 
