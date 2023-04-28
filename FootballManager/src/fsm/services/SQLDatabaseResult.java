@@ -1,11 +1,15 @@
 package fsm.services;
 
+import java.sql.CallableStatement;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 
 public class SQLDatabaseResult {
 
@@ -46,11 +50,38 @@ public class SQLDatabaseResult {
 		}
 	}
 
+	/* Update User Profile */
+	public static void updateUser(DatabaseConnectionService connection, String userName, String favTeam,
+			String favPlayerFName, String favPlayerLName) {
+		try {
+			CallableStatement cs = connection.getConnection().prepareCall("{? = call UpdateUser(?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.INTEGER);
+
+			cs.setString(2, userName);
+			cs.setString(3, favTeam);
+			cs.setString(4, favPlayerFName);
+			cs.setString(5, favPlayerLName);
+			System.out.println(userName + "\n" + favTeam + "\n" + favPlayerFName + "\n" + favPlayerLName);
+
+			cs.execute();
+			int returnValue = cs.getInt(1);
+
+			if (returnValue == 0) {
+				JOptionPane.showMessageDialog(null, "Update Successful");
+			} else if (returnValue == 1) {
+				JOptionPane.showMessageDialog(null, "ERROR: Improper Inputs");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Update user not working.");
+		}
+	}
+
 	/* Returns a 2d array of the contents of a given table in a given database */
 	public static Object[][] getResult(DatabaseConnectionService connection, String table) {
 		try {
 			///// Creating a query and querying the database
-			// TODO:Prevent SQL Injection Attacks
 			Statement statement = connection.getConnection().createStatement();
 			String selectSql = "SELECT * from " + table;
 			ResultSet rs = statement.executeQuery(selectSql);

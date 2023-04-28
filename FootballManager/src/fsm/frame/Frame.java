@@ -26,6 +26,7 @@ public class Frame {
 	JFrame frame = new JFrame();
 	boolean useEmpty = false;
 	String tableName;
+	String userName;
 	/////
 
 	/* Method that will take a 2 dimensional string and print it */
@@ -68,6 +69,74 @@ public class Frame {
 	}
 
 	/* starts the login JFrame */
+	public void profileFrame(DatabaseConnectionService con) {
+		///// Removing possible old values
+		frame.dispose();
+		frame = new JFrame();
+		/////
+
+		///// Create objects
+		JButton submit = new JButton("Update Favorite Things");
+
+		JLabel teamName = new JLabel("Enter Favorite Team");
+		JTextField favTeam = new JTextField(8);
+
+		JLabel playerFName = new JLabel("Enter Favorite Player FName");
+		JTextField favPlayerF = new JTextField(8);
+
+		JLabel playerLName = new JLabel("Enter Favorite Player LName");
+		JTextField favPlayerL = new JTextField(8);
+
+		Box teamBox = Box.createVerticalBox();
+		Box playerBoxF = Box.createVerticalBox();
+		Box playerBoxL = Box.createVerticalBox();
+
+		JPanel submitPanel = new JPanel();
+		JPanel input = new JPanel();
+		/////
+
+		///// Action listener for button
+		submit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String team = favTeam.getText();
+				String fname = favPlayerF.getText();
+				String lname = favPlayerL.getText();
+				if (team.equals(""))
+					team = null;
+				if (fname.equals(""))
+					fname = null;
+				if (lname.equals(""))
+					lname = null;
+				SQLDatabaseResult.updateUser(con, userName, team, fname, lname);
+			}
+		});
+		/////
+
+		///// Add to panels
+		teamBox.add(teamName);
+		teamBox.add(favTeam);
+
+		playerBoxF.add(playerFName);
+		playerBoxF.add(favPlayerF);
+
+		playerBoxL.add(playerLName);
+		playerBoxL.add(favPlayerL);
+
+		submitPanel.add(submit);
+
+		input.add(teamBox);
+		input.add(playerBoxF);
+		input.add(playerBoxL);
+		input.add(submitPanel);
+		/////
+
+		///// Add panels to frame
+		frame.add(input);
+		/////
+
+		formatFrame(con);
+	}
+
 	public void loginFrame(DatabaseConnectionService con) {
 		UserService serv = new UserService(con);
 
@@ -98,6 +167,7 @@ public class Frame {
 			public void actionPerformed(ActionEvent e) {
 				if (serv.login(user.getText(), charToString(pass.getPassword()))) {
 					System.out.println("Login Successful");
+					userName = user.getText();
 					launchView(con);
 				}
 				user.setText("");
@@ -109,6 +179,7 @@ public class Frame {
 			public void actionPerformed(ActionEvent e) {
 				if (serv.register(user.getText(), charToString(pass.getPassword()))) {
 					System.out.println("Register Successful");
+					userName = user.getText();
 					launchView(con);
 				}
 				user.setText("");
@@ -170,6 +241,16 @@ public class Frame {
 					System.out.println("Changed view to " + cb.getSelectedItem() + " table.");
 					viewTable((String) cb.getSelectedItem(), dcs);
 				}
+			}
+		});
+		/////
+
+		///// Button for user profile
+		JButton userButton = new JButton("Profile");
+		userButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Swapped to profile frame");
+				profileFrame(con);
 			}
 		});
 		/////
@@ -246,6 +327,7 @@ public class Frame {
 		/////
 
 		///// Adding components to all the panels
+		refreshBtnPnl.add(userButton);
 		refreshBtnPnl.add(refresh);
 		dropdownPnl.add(cb);
 		checkboxPnl.add(jcb);
@@ -271,7 +353,7 @@ public class Frame {
 
 	public void formatFrame(DatabaseConnectionService con) {
 		///// Adding a bunch of JFrame setting to make it look better
-		frame.setTitle(tableName);
+		frame.setTitle(userName);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
