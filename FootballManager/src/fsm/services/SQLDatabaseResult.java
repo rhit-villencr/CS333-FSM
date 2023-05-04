@@ -54,7 +54,7 @@ public class SQLDatabaseResult {
 	public static void updateUser(DatabaseConnectionService connection, String userName, String favTeam,
 			String favPlayerFName, String favPlayerLName) {
 		try {
-			CallableStatement cs = connection.getConnection().prepareCall("{? = call UpdateUser(?, ?, ?, ?)}");
+			CallableStatement cs = connection.getConnection().prepareCall("{? = call updateUser(?, ?, ?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 
 			cs.setString(2, userName);
@@ -119,7 +119,7 @@ public class SQLDatabaseResult {
 			return null;
 		}
 	}
-
+// :)
 	/* Returns a 1d array of the headers of a given table in a given database */
 	public static String[] getHeaders(DatabaseConnectionService dcs, String tableName) {
 		try {

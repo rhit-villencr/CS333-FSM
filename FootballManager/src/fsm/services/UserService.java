@@ -37,24 +37,30 @@ public class UserService {
 		Connection con = this.dbService.getConnection();
 
 		try {
-			String query = "SELECT PasswordSalt, PasswordHash\nFROM [Users]\nWHERE Username = ?";
-			PreparedStatement checkPass = con.prepareStatement(query);
-			checkPass.setString(1, username);
-			ResultSet rs = checkPass.executeQuery();
-
-			if (rs.next()) {
-				byte[] testSalt = dec.decode(rs.getString("PasswordSalt"));
-				String testHash = rs.getString("PasswordHash");
-				String hashedSalt = hashPassword(testSalt, password);
-				if (!testHash.equals(hashedSalt)) {
-					JOptionPane.showMessageDialog(null, "Login Failed");
-					return false;
-				}
-				return true;
-			} else {
+			CallableStatement cs = con.prepareCall("{? = call getUser(?, ?, ?)}");
+			cs.registerOutParameter(1, Types.INTEGER);
+			cs.setString(2, username);
+			cs.registerOutParameter(3, Types.VARCHAR);
+			cs.registerOutParameter(4, Types.VARCHAR);
+			cs.execute();
+			int returnValue = cs.getInt(1);
+			if(cs.getNString(3) == null) {
 				JOptionPane.showMessageDialog(null, "Login Failed");
 				return false;
 			}
+			byte[] testSalt = dec.decode(cs.getNString(3));
+			String testHash = cs.getNString(4);
+			String hashedSalt = hashPassword(testSalt, password);
+			if (!testHash.equals(hashedSalt)) {
+				JOptionPane.showMessageDialog(null, "Login Failed");
+				return false;
+			}
+			if(returnValue == 1){
+				JOptionPane.showMessageDialog(null, "Username Cannot Be Null");
+				return false;
+			}
+			return true;
+
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Login Error");
 			e.printStackTrace();
@@ -68,7 +74,7 @@ public class UserService {
 		byte[] newSalt = getNewSalt();
 		String passHash = hashPassword(newSalt, password);
 		try {
-			CallableStatement cs = this.dbService.getConnection().prepareCall("{? = call Register(?, ?, ?)}");
+			CallableStatement cs = this.dbService.getConnection().prepareCall("{? = call createUser(?, ?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 
 			cs.setString(2, username);
