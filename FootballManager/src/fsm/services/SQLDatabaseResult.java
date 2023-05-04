@@ -83,7 +83,7 @@ public class SQLDatabaseResult {
 		try {
 			///// Creating a query and querying the database
 			Statement statement = connection.getConnection().createStatement();
-			String selectSql = "SELECT * from " + table;
+			String selectSql = "SELECT * from " + table; //////STORED PROCEDURES ONLY
 			ResultSet rs = statement.executeQuery(selectSql);
 			/////
 
