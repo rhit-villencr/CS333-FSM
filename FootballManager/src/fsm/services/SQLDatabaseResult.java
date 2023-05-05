@@ -81,22 +81,25 @@ public class SQLDatabaseResult {
 	/* Returns a 2d array of the contents of a given table in a given database */
 	public static Object[][] getResult(DatabaseConnectionService connection, String table) {
 		try {
-			///// Creating a query and querying the database
-			Statement statement = connection.getConnection().createStatement();
-			String selectSql = "SELECT * from " + table; //////STORED PROCEDURES ONLY
-			ResultSet rs = statement.executeQuery(selectSql);
-			/////
+			CallableStatement cs = connection.getConnection().prepareCall("{? = call viewAll(?)}");
+			cs.registerOutParameter(1, Types.INTEGER);
+			cs.setString(2, table);
+			boolean results = cs.execute();
 
-			///// Convert data into array list
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
-			while (rs.next()) {
-				ArrayList<String> temp = new ArrayList<String>();
-				for (int i = 0; i < getHeaders(connection, table).length; i++) {
-					temp.add(rs.getString(i + 1));
+			while (results) {
+				ResultSet rs = cs.getResultSet();
+				while (rs.next()) {
+					ArrayList<String> temp = new ArrayList<String>();
+					for (int i = 0; i < getHeaders(connection, table).length; i++) {
+						temp.add(rs.getString(i + 1));
+					}
+					data.add(temp);
 				}
-				data.add(temp);
+				rs.close();
+				results = cs.getMoreResults();
 			}
-			/////
+			cs.close();
 
 			///// Convert said array list into a 2d string array
 			Object[][] returnData = new String[data.size()][];
@@ -119,25 +122,31 @@ public class SQLDatabaseResult {
 			return null;
 		}
 	}
+
 // :)
 	/* Returns a 1d array of the headers of a given table in a given database */
 	public static String[] getHeaders(DatabaseConnectionService dcs, String tableName) {
 		try {
 			///// Creating a query and querying the database
 			// TODO:Prevent SQL Injection Attacks
-			Statement statement = dcs.getConnection().createStatement();
-			String selectSql = "SELECT * from " + tableName;
-			ResultSet rs = statement.executeQuery(selectSql);
-			ResultSetMetaData rsmd = rs.getMetaData();
-			/////
-
-			///// Convert meta data into array list of column headers
+			CallableStatement cs = dcs.getConnection().prepareCall("{? = call getHeaders(?)}");
+			cs.registerOutParameter(1, Types.INTEGER);
+			cs.setString(2, tableName);
 			ArrayList<String> columnNames = new ArrayList<String>();
-			for (int i = 1; i < rsmd.getColumnCount() + 1; i++) {
-				columnNames.add(rsmd.getColumnName(i));
+			boolean results = cs.execute();
+			// Loop through the available result sets.
+			while (results) {
+				ResultSet rs = cs.getResultSet();
+				// Retrieve data from the result set.
+				while (rs.next()) {
+					// using rs.getxxx() method to retrieve data
+					columnNames.add(rs.getString("COLUMN_NAME"));
+				}
+				rs.close();
+				// Check for next result set
+				results = cs.getMoreResults();
 			}
-			/////
-
+			cs.close();
 			///// Convert said array list into a 1d string array
 			String[] returnData = new String[columnNames.size()];
 			for (int i = 0; i < columnNames.size(); i++) {
@@ -145,9 +154,7 @@ public class SQLDatabaseResult {
 			}
 			/////
 			return returnData;
-
 		}
-
 		/* Checking for SQL errors */
 		catch (SQLException e) {
 			e.printStackTrace();
