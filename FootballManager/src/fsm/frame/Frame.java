@@ -310,7 +310,7 @@ public class Frame {
 
 		///// Standardizing minimum column width
 		int var, width;
-		TableColumn l_Col;/* from w w w .j av a 2s . c om */
+		TableColumn l_Col;/* from www.java2s.com */
 		for (var = 0; var < table.getColumnCount(); var++) {
 			l_Col = table.getColumn(table.getColumnName(var));
 			width = columnHeaderWidth(table, l_Col) + 6;
