@@ -25,7 +25,7 @@ import javax.swing.table.TableColumn;
  * @author villencr
  *
  */
-public class Frame {
+public class OfflineFrameTesting {
 
 	///// Initialize globals
 	JFrame frame = new JFrame();
@@ -55,8 +55,8 @@ public class Frame {
 	 * @param con
 	 */
 	/* Starts the code */
-	public void launchLogin(DatabaseConnectionService con) {
-		loginFrame(con);
+	public void launchLogin() {
+		loginFrame();
 	}
 
 	/**
@@ -64,13 +64,15 @@ public class Frame {
 	 * @param con
 	 */
 	/* will start the table view frame */
-	public void launchView(DatabaseConnectionService con) {
+	public void launchView() {
 
 		///// Checks if any nonempty tables exist
-		String[] NET = SQLDatabaseResult.getTables(con, useEmpty);
+		String[] NET = new String[2];
+		NET[0] = "Test";
+		NET[1] = "Tables";
 		if (NET.length != 0) {
 			tableName = NET[0];
-			viewTable(tableName, con);
+			viewTable(tableName);
 		} else {
 			System.exit(1);
 		}
@@ -95,15 +97,23 @@ public class Frame {
 	 * @param con
 	 */
 	/* starts the login JFrame */
-	public void profileFrame(DatabaseConnectionService con) {
+	public void profileFrame() {
 		///// Removing possible old values
 		frame.dispose();
 		frame = new JFrame();
 		/////
 
 		///// Create objects
+//		JButton submit = new JButton("Update Favorite Things");
+		
+		/////////////////////////////////////////////
 		JButton submit = new JButton("Update Profile");
+		/////////////////////////////////////////////
+		
+		/////////////////////////////////////////////
 		JButton back = new JButton("Back To Tables");
+		/////////////////////////////////////////////
+
 
 		JLabel teamName = new JLabel("Enter Favorite Team");
 		JTextField favTeam = new JTextField(8);
@@ -118,7 +128,12 @@ public class Frame {
 		Box playerBoxF = Box.createVerticalBox();
 		Box playerBoxL = Box.createVerticalBox();
 
+//		JPanel submitPanel = new JPanel();
+		
+		///////////////////////////////////////////////
 		Box submitPanel = Box.createVerticalBox();
+		///////////////////////////////////////////////
+		
 		JPanel input = new JPanel();
 		/////
 
@@ -134,15 +149,18 @@ public class Frame {
 					fname = null;
 				if (lname.equals(""))
 					lname = null;
-				SQLDatabaseResult.updateUser(con, userName, team, fname, lname);
 			}
 		});
 		
+		/////////////////////////////////////////////
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				launchView(con);
-		}
+				launchView();
+			}
 		});
+		/////////////////////////////////////////////
+
+		
 		/////
 
 		///// Add to panels
@@ -154,9 +172,12 @@ public class Frame {
 
 		playerBoxL.add(playerLName);
 		playerBoxL.add(favPlayerL);
-
+		
 		submitPanel.add(submit);
+		
+		/////////////////////////////////////////////
 		submitPanel.add(back);
+		/////////////////////////////////////////////
 
 		input.add(teamBox);
 		input.add(playerBoxF);
@@ -168,22 +189,19 @@ public class Frame {
 		frame.add(input);
 		/////
 
-		formatFrame(con);
+		formatFrame();
 	}
 
 	/**
 	 * @param con
 	 */
-	public void loginFrame(DatabaseConnectionService con) {
-		UserService serv = new UserService(con);
-
+	public void loginFrame() {
 		///// Removing possible old values
 		frame.dispose();
 		frame = new JFrame();
 		/////
 
 		///// Initializing out connection to the given one
-		DatabaseConnectionService dcs = con;
 		/////
 
 		///// Initializing componenets and setting the echochar to "*"
@@ -202,27 +220,16 @@ public class Frame {
 		///// A bunch of action listeners
 		login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (serv.login(user.getText(), charToString(pass.getPassword()))) {
 					System.out.println("Login Successful");
 					userName = user.getText();
-					launchView(con);
-				}
+					launchView();
+				
 				user.setText("");
 				pass.setText("");
 			}
 		});
 
-		register.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (serv.register(user.getText(), charToString(pass.getPassword()))) {
-					System.out.println("Register Successful");
-					userName = user.getText();
-					launchView(con);
-				}
-				user.setText("");
-				pass.setText("");
-			}
-		});
+
 
 		showPass.addItemListener(new ItemListener() {
 			@Override
@@ -251,7 +258,7 @@ public class Frame {
 		frame.add(buttons, BorderLayout.SOUTH);
 		/////
 
-		formatFrame(dcs);
+		formatFrame();
 
 	}
 
@@ -261,7 +268,7 @@ public class Frame {
 	 * @param con
 	 */
 	/* Will refresh the JFrame with whatever table in inserted */
-	public void viewTable(String tableName, DatabaseConnectionService con) {
+	public void viewTable(String tableName) {
 
 		///// Removing possible old values
 		frame.dispose();
@@ -269,11 +276,12 @@ public class Frame {
 		/////
 
 		///// Initializing out connection to the given one
-		DatabaseConnectionService dcs = con;
 		/////
 
 		///// To create the dropdown menu
-		String[] choices = SQLDatabaseResult.getTables(con, useEmpty);
+		String[] choices = new String[2];
+		choices[0] = "Test";
+		choices[1] = "Tables";
 		JComboBox<String> cb = new JComboBox<String>(choices);
 		cb.setSelectedItem((Object) tableName);
 
@@ -281,7 +289,7 @@ public class Frame {
 			public void actionPerformed(ActionEvent e) {
 				if (!cb.getSelectedItem().equals("tableName")) {
 					System.out.println("Changed view to " + cb.getSelectedItem() + " table.");
-					viewTable((String) cb.getSelectedItem(), dcs);
+					viewTable((String) cb.getSelectedItem());
 				}
 			}
 		});
@@ -292,7 +300,7 @@ public class Frame {
 		userButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Swapped to profile frame");
-				profileFrame(con);
+				profileFrame();
 			}
 		});
 		/////
@@ -303,7 +311,7 @@ public class Frame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Refreshed " + tableName + " table.");
-				viewTable(tableName, dcs);
+				viewTable(tableName);
 			}
 		});
 		/////
@@ -315,7 +323,7 @@ public class Frame {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				useEmpty = (e.getStateChange() == ItemEvent.SELECTED);
-				viewTable(tableName, dcs);
+				viewTable(tableName);
 			}
 		});
 		/////
@@ -331,14 +339,14 @@ public class Frame {
 		/////
 
 		///// Getting the headers and adding them to the table
-		String[] headers = SQLDatabaseResult.getHeaders(dcs, tableName);
+		String[] headers = getHeaders(tableName);
 		for (int i = 0; i < headers.length; i++) {
 			tableModel.addColumn(headers[i]);
 		}
 		/////
 
 		///// Inputting collected data into the table
-		Object[][] result = SQLDatabaseResult.getResult(dcs, tableName);
+		Object[][] result = getResult(tableName);
 		Vector<Object> newRow;
 		for (int i = 0; i < result.length; i++) {
 			newRow = new Vector<Object>();
@@ -389,25 +397,17 @@ public class Frame {
 		frame.add(topPnl, BorderLayout.NORTH);
 		/////
 
-		formatFrame(dcs);
+		formatFrame();
 
 	}
 
 	/**
 	 * @param con
 	 */
-	public void formatFrame(DatabaseConnectionService con) {
+	public void formatFrame() {
 		///// Adding a bunch of JFrame setting to make it look better
 		frame.setTitle(userName);
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent event) {
-				con.closeConnection();
-				frame.dispose();
-				System.exit(0);
-			}
-		});
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -416,6 +416,46 @@ public class Frame {
 		/////
 	}
 
+	public String[] getHeaders(String tableName) {
+		String[] choices = null;
+
+		if(tableName.equals("Test")) {
+			choices = new String[2];
+			choices[0] = "Test1";
+			choices[1] = "Tables1";
+		}else {
+			choices = new String[2];
+			choices[0] = "Test2";
+			choices[1] = "Tables2";
+		}
+		return choices;
+	}
+	
+	public String[][] getResult(String tableName) {
+		String[][] choices = null;
+
+		if(tableName.equals("Test")) {
+			choices = new String[2][3];
+			choices[0][0] = "0,0:test";
+			choices[0][1] = "0,1:test";
+			choices[0][2] = "0,2:test";
+
+			choices[1][0] = "1,1:test";
+			choices[1][1] = "1,2:test";
+			choices[1][2] = "1,3:test";
+		}else {
+			choices = new String[2][3];
+			choices[0][0] = "0,0:tables";
+			choices[0][1] = "0,1:tables";
+			choices[0][2] = "0,2:tables";
+
+			choices[1][0] = "1,1:tables";
+			choices[1][1] = "1,2:tables";
+			choices[1][2] = "1,3:tables";
+		}
+		return choices;
+	}
+	
 	/**
 	 * 
 	 * @param l_Table
