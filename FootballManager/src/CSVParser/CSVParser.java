@@ -69,7 +69,7 @@ public class CSVParser {
 
 		connect();
 		// Name of the CSV file to read
-		String csvFile = "C:\\\\Users\\\\villencr\\\\Documents\\\\HahaChaseBozo.csv";
+		String csvFile = "C:\\\\Users\\\\villencr\\\\Documents\\\\Players.csv";
 		String line = "";
 		String cvsSplitBy = ",";
 		boolean isHeader = true;
