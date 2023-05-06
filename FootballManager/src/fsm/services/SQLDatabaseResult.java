@@ -13,6 +13,12 @@ import javax.swing.JOptionPane;
 
 public class SQLDatabaseResult {
 
+	/**
+	 * 
+	 * @param connection
+	 * @param useEmpty
+	 * @return String[]
+	 */
 	/* Returns a 1d array of all nonempty table names in the given database */
 	public static String[] getTables(DatabaseConnectionService connection, boolean useEmpty) {
 		try {
@@ -50,6 +56,14 @@ public class SQLDatabaseResult {
 		}
 	}
 
+	/**
+	 * 
+	 * @param connection
+	 * @param userName
+	 * @param favTeam
+	 * @param favPlayerFName
+	 * @param favPlayerLName
+	 */
 	/* Update User Profile */
 	public static void updateUser(DatabaseConnectionService connection, String userName, String favTeam,
 			String favPlayerFName, String favPlayerLName) {
@@ -78,6 +92,12 @@ public class SQLDatabaseResult {
 		}
 	}
 
+	/**
+	 * 
+	 * @param connection
+	 * @param table
+	 * @return Object[][]
+	 */
 	/* Returns a 2d array of the contents of a given table in a given database */
 	public static Object[][] getResult(DatabaseConnectionService connection, String table) {
 		try {
@@ -123,7 +143,12 @@ public class SQLDatabaseResult {
 		}
 	}
 
-// :)
+	/**
+	 * 
+	 * @param dcs
+	 * @param tableName
+	 * @return String[]
+	 */
 	/* Returns a 1d array of the headers of a given table in a given database */
 	public static String[] getHeaders(DatabaseConnectionService dcs, String tableName) {
 		try {

@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * 
+ * @author villencr
+ *
+ */
 public class DatabaseConnectionService {
 
 	///// Globals
@@ -16,12 +21,22 @@ public class DatabaseConnectionService {
 	/////
 
 	/* Initialization */
+	/**
+	 * @param serverName
+	 * @param databaseName
+	 */
 	public DatabaseConnectionService(String serverName, String databaseName) {
 		this.serverName = serverName;
 		this.databaseName = databaseName;
 	}
 
 	/* Connect to database */
+	/**
+	 * @param user
+	 * @param pass
+	 * @return boolean
+	 * @throws Exception
+	 */
 	public boolean connect(String user, String pass) throws Exception {
 
 		///// Set vars
@@ -44,6 +59,10 @@ public class DatabaseConnectionService {
 		}
 	}
 
+	/**
+	 * 
+	 * @return Connection
+	 */
 	/* getter for connection */
 	public Connection getConnection() {
 		return this.connection;
@@ -62,6 +81,10 @@ public class DatabaseConnectionService {
 		}
 	}
 
+	/**
+	 * 
+	 * @throws Exception
+	 */
 	/* Unused: quickly disconnect and then reconnect */
 	public void refreshConnection() throws Exception {
 		closeConnection();

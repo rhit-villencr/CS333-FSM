@@ -21,6 +21,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+/**
+ * @author villencr
+ *
+ */
 public class Frame {
 
 	///// Initialize globals
@@ -30,6 +34,10 @@ public class Frame {
 	String userName;
 	/////
 
+	/**
+	 * 
+	 * @param data
+	 */
 	/* Method that will take a 2 dimensional string and print it */
 	public void printTable(String[][] data) {
 		for (int i = 0; i < data.length; i++) {
@@ -42,11 +50,19 @@ public class Frame {
 
 	}
 
+	/**
+	 * 
+	 * @param con
+	 */
 	/* Starts the code */
 	public void launchLogin(DatabaseConnectionService con) {
 		loginFrame(con);
 	}
 
+	/**
+	 * 
+	 * @param con
+	 */
 	/* will start the table view frame */
 	public void launchView(DatabaseConnectionService con) {
 
@@ -61,6 +77,11 @@ public class Frame {
 		/////
 	}
 
+	/**
+	 * 
+	 * @param a
+	 * @return String
+	 */
 	/* method to convert a char array to a string */
 	public static String charToString(char[] a) {
 		// Creating object of String class
@@ -69,6 +90,10 @@ public class Frame {
 		return string;
 	}
 
+	/**
+	 * 
+	 * @param con
+	 */
 	/* starts the login JFrame */
 	public void profileFrame(DatabaseConnectionService con) {
 		///// Removing possible old values
@@ -138,6 +163,9 @@ public class Frame {
 		formatFrame(con);
 	}
 
+	/**
+	 * @param con
+	 */
 	public void loginFrame(DatabaseConnectionService con) {
 		UserService serv = new UserService(con);
 
@@ -219,6 +247,11 @@ public class Frame {
 
 	}
 
+	/**
+	 * 
+	 * @param tableName
+	 * @param con
+	 */
 	/* Will refresh the JFrame with whatever table in inserted */
 	public void viewTable(String tableName, DatabaseConnectionService con) {
 
@@ -352,6 +385,9 @@ public class Frame {
 
 	}
 
+	/**
+	 * @param con
+	 */
 	public void formatFrame(DatabaseConnectionService con) {
 		///// Adding a bunch of JFrame setting to make it look better
 		frame.setTitle(userName);
@@ -372,6 +408,12 @@ public class Frame {
 		/////
 	}
 
+	/**
+	 * 
+	 * @param l_Table
+	 * @param col
+	 * @return int
+	 */
 	/* Function to get the width of a given header of a table */
 	static private int columnHeaderWidth(JTable l_Table, TableColumn col) {
 		TableCellRenderer renderer = l_Table.getTableHeader().getDefaultRenderer();

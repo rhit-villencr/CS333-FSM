@@ -17,6 +17,11 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.swing.JOptionPane;
 
+/**
+ * 
+ * @author villencr
+ *
+ */
 public class UserService {
 	private static final Random RANDOM = new SecureRandom();
 	private static final Base64.Encoder enc = Base64.getEncoder();
@@ -33,6 +38,12 @@ public class UserService {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @param username
+	 * @param password
+	 * @return boolean
+	 */
 	public boolean login(String username, String password) {
 		Connection con = this.dbService.getConnection();
 
@@ -69,6 +80,12 @@ public class UserService {
 
 	}
 
+	/**
+	 * 
+	 * @param username
+	 * @param password
+	 * @return boolean
+	 */
 	public boolean register(String username, String password) {
 		// TODO: Task 6
 		byte[] newSalt = getNewSalt();
@@ -107,6 +124,10 @@ public class UserService {
 		}
 	}
 
+	/**
+	 * 
+	 * @return byte[]
+	 */
 	public byte[] getNewSalt() {
 		byte[] salt = new byte[16];
 		RANDOM.nextBytes(salt);
@@ -117,6 +138,12 @@ public class UserService {
 		return enc.encodeToString(data);
 	}
 
+	/**
+	 * 
+	 * @param salt
+	 * @param password
+	 * @return String
+	 */
 	public String hashPassword(byte[] salt, String password) {
 
 		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);

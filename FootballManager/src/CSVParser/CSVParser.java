@@ -19,6 +19,10 @@ import javax.swing.JOptionPane;
 
 import fsm.services.DatabaseConnectionService;
 
+/**
+ * @author villencr
+ *
+ */
 public class CSVParser {
 
 	static DatabaseConnectionService dbs = null;
@@ -65,6 +69,9 @@ public class CSVParser {
 		}
 	}
 
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		connect();

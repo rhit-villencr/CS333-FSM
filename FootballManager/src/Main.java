@@ -8,7 +8,14 @@ import java.util.Scanner;
 import fsm.frame.Frame;
 import fsm.services.DatabaseConnectionService;
 
+/**
+ * @author villencr
+ *
+ */
 public class Main {
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		///// Declare variables
 		String serverName = "";
