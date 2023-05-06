@@ -68,6 +68,7 @@ public class SQLDatabaseResult {
 	public static void updateUser(DatabaseConnectionService connection, String userName, String favTeam,
 			String favPlayerFName, String favPlayerLName) {
 		try {
+			///// Create a callable statement to updateUser
 			CallableStatement cs = connection.getConnection().prepareCall("{? = call updateUser(?, ?, ?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 
@@ -75,9 +76,12 @@ public class SQLDatabaseResult {
 			cs.setString(3, favTeam);
 			cs.setString(4, favPlayerFName);
 			cs.setString(5, favPlayerLName);
-			System.out.println(userName + "\n" + favTeam + "\n" + favPlayerFName + "\n" + favPlayerLName);
+//			System.out.println(userName + "\n" + favTeam + "\n" + favPlayerFName + "\n" + favPlayerLName);
 
 			cs.execute();
+			/////
+
+			///// Check return values of the SPROC
 			int returnValue = cs.getInt(1);
 
 			if (returnValue == 0) {
@@ -85,6 +89,7 @@ public class SQLDatabaseResult {
 			} else if (returnValue == 1) {
 				JOptionPane.showMessageDialog(null, "ERROR: Improper Inputs");
 			}
+			/////
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -101,11 +106,14 @@ public class SQLDatabaseResult {
 	/* Returns a 2d array of the contents of a given table in a given database */
 	public static Object[][] getResult(DatabaseConnectionService connection, String table) {
 		try {
+			///// Create a callable statement that calls the SPROC viewAll and set vars
 			CallableStatement cs = connection.getConnection().prepareCall("{? = call viewAll(?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 			cs.setString(2, table);
 			boolean results = cs.execute();
+			/////
 
+			///// Initialize 2d array list and parse through inputtin data
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			while (results) {
 				ResultSet rs = cs.getResultSet();
@@ -120,6 +128,7 @@ public class SQLDatabaseResult {
 				results = cs.getMoreResults();
 			}
 			cs.close();
+			/////
 
 			///// Convert said array list into a 2d string array
 			Object[][] returnData = new String[data.size()][];
@@ -152,8 +161,7 @@ public class SQLDatabaseResult {
 	/* Returns a 1d array of the headers of a given table in a given database */
 	public static String[] getHeaders(DatabaseConnectionService dcs, String tableName) {
 		try {
-			///// Creating a query and querying the database
-			// TODO:Prevent SQL Injection Attacks
+			///// Creating a callable statement that calls a SPROC from the database
 			CallableStatement cs = dcs.getConnection().prepareCall("{? = call getHeaders(?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 			cs.setString(2, tableName);

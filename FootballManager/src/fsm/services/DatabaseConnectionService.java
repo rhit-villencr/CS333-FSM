@@ -70,7 +70,6 @@ public class DatabaseConnectionService {
 
 	/* Disconnect from database */
 	public void closeConnection() {
-		// TODO: Task 1
 		try {
 			if (!connection.isClosed()) {
 				connection.close();
