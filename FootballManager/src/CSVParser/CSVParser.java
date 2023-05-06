@@ -85,11 +85,11 @@ public class CSVParser {
 		boolean ready = false;
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 			while ((line = br.readLine()) != null) {
-				if(ready) {
+				if (ready) {
 					cs = con.prepareCall("{? = call createPerson(?, ?)}");
 					cs.registerOutParameter(1, Types.INTEGER);
 				}
-				
+
 				if (isHeader) {
 					String[] row = line.split(cvsSplitBy);
 					for (String col : row) {
@@ -119,10 +119,12 @@ public class CSVParser {
 								}
 							} else if (headers.get(curHeader).equals("Player Name")) {
 								String[] name = col.split(" ");
-								if(ready) cs.setString(3, name[1]);
+								if (ready)
+									cs.setString(3, name[1]);
 //								System.out.println("FirstName:" + name[0]);
 
-								if(ready) cs.setString(2, name[0]);
+								if (ready)
+									cs.setString(2, name[0]);
 //								System.out.print("LastName:" + name[1]);
 							} else {
 //								System.out.print(headers.get(curHeader) + ":");
@@ -140,20 +142,21 @@ public class CSVParser {
 				curHeader = 0;
 //				System.out.println("====================");
 				// Next Player
-				if(ready) cs.execute();
-				
-				if(ready) {
-				int returnValue = cs.getInt(1);
+				if (ready)
+					cs.execute();
 
-				if (returnValue == 4) {
-					JOptionPane.showMessageDialog(null, "Person Already Exists");
-				} else if (returnValue == 5) {
-					JOptionPane.showMessageDialog(null, "Failed To Create");
-				} else if (returnValue == 2) {
-					JOptionPane.showMessageDialog(null, "Last Name Cannot Be NULL");
-				} else if (returnValue == 1) {
-					JOptionPane.showMessageDialog(null, "First Name Cannot Be NULL");
-				} 
+				if (ready) {
+					int returnValue = cs.getInt(1);
+
+					if (returnValue == 4) {
+						JOptionPane.showMessageDialog(null, "Person Already Exists");
+					} else if (returnValue == 5) {
+						JOptionPane.showMessageDialog(null, "Failed To Create");
+					} else if (returnValue == 2) {
+						JOptionPane.showMessageDialog(null, "Last Name Cannot Be NULL");
+					} else if (returnValue == 1) {
+						JOptionPane.showMessageDialog(null, "First Name Cannot Be NULL");
+					}
 //				else if (returnValue == 6) {
 //					JOptionPane.showMessageDialog(null, "Success");
 //				}

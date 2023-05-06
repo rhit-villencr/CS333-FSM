@@ -44,7 +44,7 @@ public class UserService {
 			cs.registerOutParameter(4, Types.VARCHAR);
 			cs.execute();
 			int returnValue = cs.getInt(1);
-			if(cs.getNString(3) == null) {
+			if (cs.getNString(3) == null) {
 				JOptionPane.showMessageDialog(null, "Login Failed");
 				return false;
 			}
@@ -55,7 +55,7 @@ public class UserService {
 				JOptionPane.showMessageDialog(null, "Login Failed");
 				return false;
 			}
-			if(returnValue == 1){
+			if (returnValue == 1) {
 				JOptionPane.showMessageDialog(null, "Username Cannot Be Null");
 				return false;
 			}
