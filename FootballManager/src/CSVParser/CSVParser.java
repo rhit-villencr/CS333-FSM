@@ -28,8 +28,6 @@ public class CSVParser {
 	static DatabaseConnectionService dbs = null;
 	static String csvFolder = "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
 
-	
-	
 	public static void connect() {
 		String serverName = "";
 		String databaseName = "";
@@ -77,35 +75,34 @@ public class CSVParser {
 	 */
 	public static void main(String[] args) {
 		connect();
-		
+
+		insertTeam();
+
 		insertPerson();
-//		insertPlayer();
-//		insertTeam();
-		
+		insertPlayer();
+
 	}
 
-	public static void insertPerson() {
-		// Name of the CSV file to read
+	public static void insertTeam() {
+
+	}
+
+	public static void insertPlayer() {
 		String person = csvFolder + "Players.csv";
 		String line = "";
 		String cvsSplitBy = ",";
 		boolean isHeader = true;
 		int curHeader = 0;
 		ArrayList<String> headers = new ArrayList<String>();
-		String[] sqlHeaders = { "Player Name", "TeamName", "Pos" };
-		String[] offPos = { "C", "FB", "LG", "QB", "RB", "RG", "TE", "WR", "LT", "RT" };
-		String[] defPos = { "CB", "EDGE", "IDL", "LB", "S" };
-
 		Connection con = dbs.getConnection();
 		CallableStatement cs = null;
 		boolean ready = false;
 		try (BufferedReader br = new BufferedReader(new FileReader(person))) {
 			while ((line = br.readLine()) != null) {
 				if (ready) {
-					cs = con.prepareCall("{? = call createPerson(?, ?)}");
+					cs = con.prepareCall("{? = call createPlayer(?, ?, ?, ?, ?)}");
 					cs.registerOutParameter(1, Types.INTEGER);
 				}
-
 				if (isHeader) {
 					String[] row = line.split(cvsSplitBy);
 					for (String col : row) {
@@ -116,72 +113,90 @@ public class CSVParser {
 					String[] row = line.split(cvsSplitBy);
 					for (String col : row) {
 						try {
-							List<String> sqlHeadersList = Arrays.asList(sqlHeaders);
-							if (!sqlHeadersList.contains(headers.get(curHeader))) {
-								break;
-							}
 							if (headers.get(curHeader).equals("Pos")) {
-								List<String> offensePos = Arrays.asList(offPos);
-								List<String> defensePos = Arrays.asList(defPos);
-//								System.out.println("Position:" + col);
-								if (offensePos.contains(col)) {
-//									System.out.print("OffensivePlayer");
-								} else if (defensePos.contains(col)) {
-//									System.out.print("DefensivePlayer");
-								} else {
-//									System.out.print("SpecialteamsPlayer");
-
-								}
-							} else if (headers.get(curHeader).equals("Player Name")) {
+								if (ready)
+									cs.setString(6, col);
+							}
+							if (headers.get(curHeader).equals("Player Name")) {
 								String[] name = col.split(" ");
-								if (ready)
+								if (ready) {
 									cs.setString(3, name[1]);
-//								System.out.println("FirstName:" + name[0]);
-
-								if (ready)
 									cs.setString(2, name[0]);
-//								System.out.print("LastName:" + name[1]);
-							} else {
-//								System.out.print(headers.get(curHeader) + ":");
-//								System.out.print(col);
+								}
 
+							}
+							if (headers.get(curHeader).equals("TeamName")) {
+								if (ready)
+									cs.setString(4, col);
+							}
+							if (headers.get(curHeader).equals("Salary") && ready) {
+								if (ready)
+									cs.setString(5, col);
 							}
 						} catch (Exception e) {
-
 						}
 						curHeader++;
-//						System.out.println();
 					}
-
 				}
 				curHeader = 0;
-//				System.out.println("====================");
-				// Next Player
 				if (ready)
 					cs.execute();
-
-				if (ready) {
-					int returnValue = cs.getInt(1);
-
-//					if (returnValue == 4) {
-//						JOptionPane.showMessageDialog(null, "Person Already Exists");
-//					} else if (returnValue == 5) {
-//						JOptionPane.showMessageDialog(null, "Failed To Create");
-//					} else if (returnValue == 2) {
-//						JOptionPane.showMessageDialog(null, "Last Name Cannot Be NULL");
-//					} else if (returnValue == 1) {
-//						JOptionPane.showMessageDialog(null, "First Name Cannot Be NULL");
-//					}
-//				else if (returnValue == 6) {
-//					JOptionPane.showMessageDialog(null, "Success");
-//				}
-				}
 				ready = true;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	public static void insertPerson() {
+		// Name of the CSV file to read
+		String person = csvFolder + "Players.csv";
+		String line = "";
+		String cvsSplitBy = ",";
+		boolean isHeader = true;
+		int curHeader = 0;
+		ArrayList<String> headers = new ArrayList<String>();
+		Connection con = dbs.getConnection();
+		CallableStatement cs = null;
+		boolean ready = false;
+		try (BufferedReader br = new BufferedReader(new FileReader(person))) {
+			while ((line = br.readLine()) != null) {
+				if (ready) {
+					cs = con.prepareCall("{? = call createPerson(?, ?)}");
+					cs.registerOutParameter(1, Types.INTEGER);
+				}
+				if (isHeader) {
+					String[] row = line.split(cvsSplitBy);
+					for (String col : row) {
+						headers.add(col);
+					}
+					isHeader = false;
+				} else {
+					String[] row = line.split(cvsSplitBy);
+					for (String col : row) {
+						try {
+							if (headers.get(curHeader).equals("Player Name")) {
+								String[] name = col.split(" ");
+								if (ready)
+									cs.setString(3, name[1]);
+								if (ready)
+									cs.setString(2, name[0]);
+							}
+						} catch (Exception e) {
+						}
+						curHeader++;
+					}
+				}
+				curHeader = 0;
+				if (ready)
+					cs.execute();
+				ready = true;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 
