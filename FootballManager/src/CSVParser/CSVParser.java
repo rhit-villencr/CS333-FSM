@@ -26,7 +26,10 @@ import fsm.services.DatabaseConnectionService;
 public class CSVParser {
 
 	static DatabaseConnectionService dbs = null;
+	static String csvFolder = "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
 
+	
+	
 	public static void connect() {
 		String serverName = "";
 		String databaseName = "";
@@ -73,10 +76,17 @@ public class CSVParser {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
 		connect();
+		
+		insertPerson();
+//		insertPlayer();
+//		insertTeam();
+		
+	}
+
+	public static void insertPerson() {
 		// Name of the CSV file to read
-		String csvFile = "C:\\\\Users\\\\villencr\\\\Documents\\\\Players.csv";
+		String person = csvFolder + "Players.csv";
 		String line = "";
 		String cvsSplitBy = ",";
 		boolean isHeader = true;
@@ -89,7 +99,7 @@ public class CSVParser {
 		Connection con = dbs.getConnection();
 		CallableStatement cs = null;
 		boolean ready = false;
-		try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(person))) {
 			while ((line = br.readLine()) != null) {
 				if (ready) {
 					cs = con.prepareCall("{? = call createPerson(?, ?)}");
@@ -153,15 +163,15 @@ public class CSVParser {
 				if (ready) {
 					int returnValue = cs.getInt(1);
 
-					if (returnValue == 4) {
-						JOptionPane.showMessageDialog(null, "Person Already Exists");
-					} else if (returnValue == 5) {
-						JOptionPane.showMessageDialog(null, "Failed To Create");
-					} else if (returnValue == 2) {
-						JOptionPane.showMessageDialog(null, "Last Name Cannot Be NULL");
-					} else if (returnValue == 1) {
-						JOptionPane.showMessageDialog(null, "First Name Cannot Be NULL");
-					}
+//					if (returnValue == 4) {
+//						JOptionPane.showMessageDialog(null, "Person Already Exists");
+//					} else if (returnValue == 5) {
+//						JOptionPane.showMessageDialog(null, "Failed To Create");
+//					} else if (returnValue == 2) {
+//						JOptionPane.showMessageDialog(null, "Last Name Cannot Be NULL");
+//					} else if (returnValue == 1) {
+//						JOptionPane.showMessageDialog(null, "First Name Cannot Be NULL");
+//					}
 //				else if (returnValue == 6) {
 //					JOptionPane.showMessageDialog(null, "Success");
 //				}
