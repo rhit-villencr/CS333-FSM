@@ -85,7 +85,6 @@ public class CSVParser {
 		String[] sqlHeaders = { "Player Name", "TeamName", "Pos" };
 		String[] offPos = { "C", "FB", "LG", "QB", "RB", "RG", "TE", "WR", "LT", "RT" };
 		String[] defPos = { "CB", "EDGE", "IDL", "LB", "S" };
-		String[] specPos = { "K", "LS", "P" };
 
 		Connection con = dbs.getConnection();
 		CallableStatement cs = null;
@@ -114,7 +113,6 @@ public class CSVParser {
 							if (headers.get(curHeader).equals("Pos")) {
 								List<String> offensePos = Arrays.asList(offPos);
 								List<String> defensePos = Arrays.asList(defPos);
-								List<String> specialPos = Arrays.asList(specPos);
 //								System.out.println("Position:" + col);
 								if (offensePos.contains(col)) {
 //									System.out.print("OffensivePlayer");
