@@ -85,6 +85,75 @@ public class CSVParser {
 
 	public static void insertTeam() {
 
+		// Name of the CSV file to read
+		String teams = csvFolder + "Teams.csv";
+		String line = "";
+		String csvSplitBy = ",";
+		boolean isHeader = true;
+		int curHeader = 0;
+		ArrayList<String> headers = new ArrayList<String>();
+		Connection con = dbs.getConnection();
+		CallableStatement cs = null;
+		boolean ready = false;
+		try (BufferedReader br = new BufferedReader(new FileReader(teams))) {
+			while ((line = br.readLine()) != null) {
+				if (ready) {
+					cs = con.prepareCall("{? = call createTeam(?, ?, ?, ?, ?, ?, ?)}");
+					cs.registerOutParameter(1, Types.INTEGER);
+				}
+				if (isHeader) {
+					String[] row = line.split(csvSplitBy);
+					for (String col : row) {
+						headers.add(col);
+					}
+					isHeader = false;
+				} else {
+					String[] row = line.split(csvSplitBy);
+					for (String col : row) {
+						try {
+							if (headers.get(curHeader).equals("Name")) {
+								if (ready)
+									cs.setString(2, col);
+							}
+							if (headers.get(curHeader).equals("Location")) {
+								if (ready)
+									cs.setString(3, col);
+							}
+							if (headers.get(curHeader).equals("Division")) {
+								if (ready)
+									cs.setString(4, col);
+							}
+							if (headers.get(curHeader).equals("Conference")) {
+								if (ready)
+									cs.setString(5, col);
+							}
+							if (headers.get(curHeader).equals("Wins")) {
+								if (ready)
+									cs.setInt(6, Integer.parseInt(col));
+							}
+							if (headers.get(curHeader).equals("Losses")) {
+								if (ready)
+									cs.setInt(7, Integer.parseInt(col));
+							}
+							if (headers.get(curHeader).equals("SalaryCapSpace")) {
+								if (ready)
+									cs.setInt(8, Integer.parseInt(col));
+							}
+						} catch (Exception e) {
+						}
+						curHeader++;
+					}
+				}
+				curHeader = 0;
+				if (ready)
+					cs.execute();
+				ready = true;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	public static void insertPlayer() {

@@ -1,0 +1,33 @@
+Name,Location,Division,Conference,Wins,Losses,SalaryCapSpace
+49ers,Santa Clara CA,West,NFC,612,510,0
+Bears,Chicago IL,North,NFC,786,624,0
+Bengals,Cincinnati OH,North,AFC,385,463,0
+Bills,Orchard Park NY,East,AFC,462,495,0
+Broncos,Denver CO,West,AFC,500,456,0
+Browns,Cleveland OH,North,AFC,501,524,0
+Buccaneers,Tampa FL,South,NFC,299,422,0
+Cardinals,Glendale AZ,West,NFC,581,790,0
+Chargers,Inglewood CA,West,AFC,478,477,0
+Chiefs,Kansas City MI,West,AFC,521,433,0
+Colts,Indianapolis IN,South,AFC,547,493,0
+Commanders,Landover MD,East,NFC,625,630,0
+Cowboys,Arlington TX,East,NFC,550,408,0
+Dolphins,Miami Gardens FL,East,AFC,485,393,0
+Eagles,Philadephia PA,East,NFC,613,630,0
+Falcons,Atlanta GA,South,NFC,383,493,0
+Giants,East Rutherford NJ,East,NFC,715,638,0
+Jaguars,Jacksonville FL,South,AFC,189,261,0
+Jets,East Rutherford NJ,East,AFC,421,537,0
+Lions,Detroit MI,North,NFC,579,702,0
+Packers,Green Bay WI,North,NFC,790,590,0
+Panthers,Charlotte NC,South,NFC,212,237,0
+Patriots,Foxboro MA,East,AFC,537,420,-100
+Raiders,Las Vegas NV,West,AFC,497,458,0
+Rams,Inglewood CA,West,NFC,604,592,0
+Ravens,Baltimore MD,North,AFC,243,190,0
+Saints,New Orleans LA,South,NFC,403,460,0
+Seahawks,Seattle WA,West,NFC,383,358,0
+Steelers,Pittsburgh PA,North,AFC,661,571,0
+Texans,Houston TX,South,AFC,142,195,0
+Titans,Nashville TN,South,AFC,470,490,0
+Vikings,Minneapolis MN,North,NFC,516,425,0
