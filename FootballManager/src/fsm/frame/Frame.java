@@ -135,11 +135,11 @@ public class Frame {
 				SQLDatabaseResult.updateUser(con, userName, team, fname, lname);
 			}
 		});
-		
+
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				launchView(con);
-		}
+			}
 		});
 		/////
 

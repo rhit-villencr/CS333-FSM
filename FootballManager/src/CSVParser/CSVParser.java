@@ -75,17 +75,21 @@ public class CSVParser {
 	 */
 	public static void main(String[] args) {
 		long startTime = System.nanoTime();
-		
+
 		connect();
 
 		insertTeam();
 
-		insertPerson();
 		insertPlayer();
+		insertStaff();
 
-		long endTime   = System.nanoTime();
+		long endTime = System.nanoTime();
 		long totalTime = endTime - startTime;
-		System.out.println(totalTime/1000000000 + " seconds to populate databse.");
+		System.out.println(totalTime / 1000000000 + " seconds to populate databse.");
+	}
+
+	public static void insertStaff() {
+
 	}
 
 	public static void insertTeam() {
@@ -222,58 +226,6 @@ public class CSVParser {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-	}
-
-	public static void insertPerson() {
-		// Name of the CSV file to read
-		String person = csvFolder + "Players.csv";
-		String line = "";
-		String cvsSplitBy = ",";
-		boolean isHeader = true;
-		int curHeader = 0;
-		ArrayList<String> headers = new ArrayList<String>();
-		Connection con = dbs.getConnection();
-		CallableStatement cs = null;
-		boolean ready = false;
-		try (BufferedReader br = new BufferedReader(new FileReader(person))) {
-			while ((line = br.readLine()) != null) {
-				if (ready) {
-					cs = con.prepareCall("{? = call createPerson(?, ?)}");
-					cs.registerOutParameter(1, Types.INTEGER);
-				}
-				if (isHeader) {
-					String[] row = line.split(cvsSplitBy);
-					for (String col : row) {
-						headers.add(col);
-					}
-					isHeader = false;
-				} else {
-					String[] row = line.split(cvsSplitBy);
-					for (String col : row) {
-						try {
-							if (headers.get(curHeader).equals("Player Name")) {
-								String[] name = col.split(" ");
-								if (ready)
-									cs.setString(3, name[1]);
-								if (ready)
-									cs.setString(2, name[0]);
-							}
-						} catch (Exception e) {
-						}
-						curHeader++;
-					}
-				}
-				curHeader = 0;
-				if (ready)
-					cs.execute();
-				ready = true;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
 	}
 
 }
