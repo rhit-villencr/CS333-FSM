@@ -81,7 +81,7 @@ public class CSVParser {
 		insertTeam();
 
 		insertPlayer();
-		insertStaff();
+//		insertStaff();
 
 		long endTime = System.nanoTime();
 		long totalTime = endTime - startTime;
@@ -121,8 +121,14 @@ public class CSVParser {
 							if (headers.get(curHeader).equals("Staff Name")) {
 								String[] name = col.split(" ");
 								if (ready) {
-									cs.setString(3, name[1]);
 									cs.setString(2, name[0]);
+									String lname = "";
+									for (int i = 1; i < name.length; i++) {
+										lname += name[i];
+										lname += " ";
+									}
+									lname = lname.substring(0, lname.length() - 1);
+									cs.setString(3, lname);
 								}
 
 							}
@@ -257,8 +263,15 @@ public class CSVParser {
 							if (headers.get(curHeader).equals("Player Name")) {
 								String[] name = col.split(" ");
 								if (ready) {
-									cs.setString(3, name[1]);
 									cs.setString(2, name[0]);
+									String lname = "";
+									for (int i = 1; i < name.length; i++) {
+										lname += name[i];
+										lname += " ";
+									}
+									lname = lname.substring(0, lname.length() - 1);
+									cs.setString(3, lname);
+
 								}
 
 							}
