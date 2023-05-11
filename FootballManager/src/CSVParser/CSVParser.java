@@ -89,7 +89,66 @@ public class CSVParser {
 	}
 
 	public static void insertStaff() {
+		String staff = csvFolder + "Staff.csv";
+		String line = "";
+		String cvsSplitBy = ",";
+		boolean isHeader = true;
+		int curHeader = 0;
+		ArrayList<String> headers = new ArrayList<String>();
+		Connection con = dbs.getConnection();
+		CallableStatement cs = null;
+		boolean ready = false;
+		try (BufferedReader br = new BufferedReader(new FileReader(staff))) {
+			while ((line = br.readLine()) != null) {
+				if (ready) {
+					cs = con.prepareCall("{? = call createStaff(?, ?, ?, ?, ?)}");
+					cs.registerOutParameter(1, Types.INTEGER);
+				}
+				if (isHeader) {
+					String[] row = line.split(cvsSplitBy);
+					for (String col : row) {
+						headers.add(col);
+					}
+					isHeader = false;
+				} else {
+					String[] row = line.split(cvsSplitBy);
+					for (String col : row) {
+						try {
+							if (headers.get(curHeader).equals("Role")) {
+								if (ready)
+									cs.setString(6, col);
+							}
+							if (headers.get(curHeader).equals("Staff Name")) {
+								String[] name = col.split(" ");
+								if (ready) {
+									cs.setString(3, name[1]);
+									cs.setString(2, name[0]);
+								}
 
+							}
+							if (headers.get(curHeader).equals("TeamName")) {
+								if (ready)
+									cs.setString(4, col);
+							}
+							if (headers.get(curHeader).equals("Salary")) {
+								if (ready)
+									cs.setString(5, col);
+							}
+						} catch (Exception e) {
+						}
+						curHeader++;
+					}
+				}
+				curHeader = 0;
+				if (ready)
+					cs.execute();
+				ready = true;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	public static void insertTeam() {
@@ -207,7 +266,7 @@ public class CSVParser {
 								if (ready)
 									cs.setString(4, col);
 							}
-							if (headers.get(curHeader).equals("Salary") && ready) {
+							if (headers.get(curHeader).equals("Salary")) {
 								if (ready)
 									cs.setString(5, col);
 							}
