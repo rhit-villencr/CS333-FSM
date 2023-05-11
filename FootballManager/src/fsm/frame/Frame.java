@@ -277,7 +277,7 @@ public class Frame {
 
 		cb.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!cb.getSelectedItem().equals("tableName")) {
+				if (!cb.getSelectedItem().equals(tableName)) {
 					System.out.println("Changed view to " + cb.getSelectedItem() + " table.");
 					viewTable((String) cb.getSelectedItem(), dcs);
 				}

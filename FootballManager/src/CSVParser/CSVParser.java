@@ -74,6 +74,8 @@ public class CSVParser {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		long startTime = System.nanoTime();
+		
 		connect();
 
 		insertTeam();
@@ -81,6 +83,9 @@ public class CSVParser {
 		insertPerson();
 		insertPlayer();
 
+		long endTime   = System.nanoTime();
+		long totalTime = endTime - startTime;
+		System.out.println(totalTime/1000000000 + " seconds to populate databse.");
 	}
 
 	public static void insertTeam() {
