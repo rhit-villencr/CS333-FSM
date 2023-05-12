@@ -90,6 +90,16 @@ public class Frame {
 		return string;
 	}
 
+	public void searchFrame(DatabaseConnectionService con) {
+			///// Removing possible old values
+			frame.dispose();
+			frame = new JFrame();
+			/////
+			
+			
+			formatFrame(con);
+	}
+	
 	/**
 	 * 
 	 * @param con
