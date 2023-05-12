@@ -10,50 +10,41 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class SQLDatabaseResult {
-
-	/**
-	 * 
-	 * @param connection
-	 * @param useEmpty
-	 * @return String[]
-	 */
-	/* Returns a 1d array of all nonempty table names in the given database */
-	public static String[] getTables(DatabaseConnectionService connection, boolean useEmpty) {
+	
+	public static String[] getTeams(DatabaseConnectionService connection) {
 		try {
-			///// Initialize variables
-			DatabaseMetaData metaData = connection.getConnection().getMetaData();
-			String[] types = { "TABLE" };
-			/////
-
-			///// Retrieving the columns in the database and putting in resultString
-			///// ArrayList
-			ArrayList<String> resultString = new ArrayList<String>();
-			ResultSet tables = metaData.getTables(null, null, "%", types);
-			while (tables.next()) {
-				if ((!tables.getString("TABLE_NAME").contains("trace_xe")
-						&& !tables.getString("TABLE_NAME").contains("User"))
-						&& (!(getResult(connection, tables.getString("TABLE_NAME")).length == 0) || useEmpty)) {
-					resultString.add(tables.getString("TABLE_NAME"));
+			///// Creating a callable statement that calls a SPROC from the database
+			CallableStatement cs = connection.getConnection().prepareCall("{? = call getTeams()}");
+			cs.registerOutParameter(1, Types.INTEGER);
+			ArrayList<String> TeamNames = new ArrayList<String>();
+			boolean results = cs.execute();
+			// Loop through the available result sets.
+			while (results) {
+				ResultSet rs = cs.getResultSet();
+				// Retrieve data from the result set.
+				while (rs.next()) {
+					// using rs.getxxx() method to retrieve data
+					TeamNames.add(rs.getString("Name"));
 				}
+				rs.close();
+				// Check for next result set
+				results = cs.getMoreResults();
+			}
+			cs.close();
+			///// Convert said array list into a 1d string array
+			String[] returnData = new String[TeamNames.size()];
+			for (int i = 0; i < TeamNames.size(); i++) {
+				returnData[i] = TeamNames.get(i);
 			}
 			/////
-
-			///// Converts that array list into an array: str
-			String[] str = new String[resultString.size()];
-			for (int i = 0; i < resultString.size(); i++) {
-				str[i] = resultString.get(i);
-			}
-			/////
-			return str;
+			return returnData;
 		}
-
 		/* Checking for SQL errors */
 		catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-
 	/**
 	 * 
 	 * @param connection
@@ -102,12 +93,13 @@ public class SQLDatabaseResult {
 	 * @return Object[][]
 	 */
 	/* Returns a 2d array of the contents of a given table in a given database */
-	public static Object[][] getResult(DatabaseConnectionService connection, String table) {
+	public static Object[][] getResult(DatabaseConnectionService connection, String team, String type, String pos) {
 		try {
 			///// Create a callable statement that calls the SPROC viewAll and set vars
-			CallableStatement cs = connection.getConnection().prepareCall("{? = call viewAll(?)}");
+			CallableStatement cs = connection.getConnection().prepareCall("{? = call viewTeam" + type + "(?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
-			cs.setString(2, table);
+			cs.setString(2, team);
+			cs.setString(3, pos);
 			boolean results = cs.execute();
 			/////
 
@@ -115,9 +107,11 @@ public class SQLDatabaseResult {
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			while (results) {
 				ResultSet rs = cs.getResultSet();
+//				System.out.println(getHeaders(connection, team)[0]);
 				while (rs.next()) {
 					ArrayList<String> temp = new ArrayList<String>();
-					for (int i = 0; i < getHeaders(connection, table).length; i++) {
+					
+					for (int i = 0; i < getHeaders(connection, type).length; i++) {
 						temp.add(rs.getString(i + 1));
 					}
 					data.add(temp);
@@ -157,40 +151,19 @@ public class SQLDatabaseResult {
 	 * @return String[]
 	 */
 	/* Returns a 1d array of the headers of a given table in a given database */
-	public static String[] getHeaders(DatabaseConnectionService dcs, String tableName) {
-		try {
-			///// Creating a callable statement that calls a SPROC from the database
-			CallableStatement cs = dcs.getConnection().prepareCall("{? = call getHeaders(?)}");
-			cs.registerOutParameter(1, Types.INTEGER);
-			cs.setString(2, tableName);
-			ArrayList<String> columnNames = new ArrayList<String>();
-			boolean results = cs.execute();
-			// Loop through the available result sets.
-			while (results) {
-				ResultSet rs = cs.getResultSet();
-				// Retrieve data from the result set.
-				while (rs.next()) {
-					// using rs.getxxx() method to retrieve data
-					columnNames.add(rs.getString("COLUMN_NAME"));
-				}
-				rs.close();
-				// Check for next result set
-				results = cs.getMoreResults();
-			}
-			cs.close();
-			///// Convert said array list into a 1d string array
-			String[] returnData = new String[columnNames.size()];
-			for (int i = 0; i < columnNames.size(); i++) {
-				returnData[i] = columnNames.get(i);
-			}
-			/////
-			return returnData;
+	public static String[] getHeaders(DatabaseConnectionService dcs, String type) {
+		String[] headers = null;
+		
+		if(type.equals("Players")) {
+			String[] pl = {"FirstName", "LastName", "Position", "Salary"};
+			headers = pl;
 		}
-		/* Checking for SQL errors */
-		catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+		if(type.equals("Staff")) {
+			String[] pl = {"FirstName", "LastName", "Role"};
+			headers = pl;
 		}
+		
+		return headers;
 	}
 
 }

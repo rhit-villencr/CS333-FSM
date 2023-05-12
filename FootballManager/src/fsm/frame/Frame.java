@@ -30,6 +30,8 @@ public class Frame {
 	boolean useEmpty = false;
 	String tableName;
 	String userName;
+	String position = "QB";
+	String curView = "Players";
 	/////
 
 	/**
@@ -65,7 +67,7 @@ public class Frame {
 	public void launchView(DatabaseConnectionService con) {
 
 		///// Checks if any nonempty tables exist
-		String[] NET = SQLDatabaseResult.getTables(con, useEmpty);
+		String[] NET = SQLDatabaseResult.getTeams(con);
 		if (NET.length != 0) {
 			tableName = NET[0];
 			viewTable(tableName, con);
@@ -271,7 +273,7 @@ public class Frame {
 		/////
 
 		///// To create the dropdown menu
-		String[] choices = SQLDatabaseResult.getTables(con, useEmpty);
+		String[] choices = SQLDatabaseResult.getTeams(con);
 		JComboBox<String> cb = new JComboBox<String>(choices);
 		cb.setSelectedItem((Object) tableName);
 
@@ -284,6 +286,41 @@ public class Frame {
 			}
 		});
 		/////
+		String[] pos = null;
+		if (curView.equals("Players")) {
+			String[] posi = { "C", "CB", "EDGE", "FB", "IDL", "K", "LB", "LG", "LS", "LT", "P", "QB", "RB", "RG", "RT",
+					"S", "TE", "WR" };
+			pos = posi;
+
+		} else if (curView.equals("Staff")) {
+			String[] posi = { "HC", "DC", "OC", "ST", "GM" };
+			pos = posi;
+		}
+		JComboBox<String> posCB = new JComboBox<String>(pos);
+		posCB.setSelectedItem((Object) position);
+
+		posCB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				position = (String) posCB.getSelectedItem();
+				viewTable((String) cb.getSelectedItem(), dcs);
+			}
+		});
+
+		String[] view = { "Staff", "Players" };
+		JComboBox<String> viewCB = new JComboBox<String>(view);
+		viewCB.setSelectedItem((Object) curView);
+
+		viewCB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				curView = (String) viewCB.getSelectedItem();
+				if (curView.equals("Players")) {
+					position = "QB";
+				} else if (curView.equals("Staff")) {
+					position = "HC";
+				}
+				viewTable((String) cb.getSelectedItem(), dcs);
+			}
+		});
 
 		///// Button for user profile
 		JButton userButton = new JButton("Profile");
@@ -306,18 +343,6 @@ public class Frame {
 		});
 		/////
 
-		///// Create check box to say if want empties
-		JCheckBox jcb = new JCheckBox("Show Empty tables?", useEmpty);
-		jcb.addItemListener(new ItemListener() {
-
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				useEmpty = (e.getStateChange() == ItemEvent.SELECTED);
-				viewTable(tableName, dcs);
-			}
-		});
-		/////
-
 		///// Initializing the table and sizing properly
 		DefaultTableModel tableModel = new DefaultTableModel();
 		JTable table = new JTable(tableModel) {
@@ -329,14 +354,17 @@ public class Frame {
 		/////
 
 		///// Getting the headers and adding them to the table
-		String[] headers = SQLDatabaseResult.getHeaders(dcs, tableName);
+		String[] headers = SQLDatabaseResult.getHeaders(dcs, curView);
+//		System.out.println(curView);
 		for (int i = 0; i < headers.length; i++) {
 			tableModel.addColumn(headers[i]);
 		}
 		/////
 
 		///// Inputting collected data into the table
-		Object[][] result = SQLDatabaseResult.getResult(dcs, tableName);
+//		System.out.println("TableName:" + tableName + "\nCurView: " + curView + "\nPosition: " + position);
+		Object[][] result = SQLDatabaseResult.getResult(dcs, tableName, curView, position);
+//		printTable((String[][])result);
 		Vector<Object> newRow;
 		for (int i = 0; i < result.length; i++) {
 			newRow = new Vector<Object>();
@@ -370,7 +398,8 @@ public class Frame {
 		refreshBtnPnl.add(userButton);
 		refreshBtnPnl.add(refresh);
 		dropdownPnl.add(cb);
-		checkboxPnl.add(jcb);
+		dropdownPnl.add(posCB);
+		dropdownPnl.add(viewCB);
 		topPnl.add(refreshBtnPnl, BorderLayout.WEST);
 		topPnl.add(dropdownPnl, BorderLayout.CENTER);
 		topPnl.add(checkboxPnl, BorderLayout.EAST);

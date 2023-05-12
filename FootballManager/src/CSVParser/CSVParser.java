@@ -81,7 +81,7 @@ public class CSVParser {
 		insertTeam();
 
 		insertPlayer();
-//		insertStaff();
+		insertStaff();
 
 		long endTime = System.nanoTime();
 		long totalTime = endTime - startTime;
@@ -101,7 +101,7 @@ public class CSVParser {
 		try (BufferedReader br = new BufferedReader(new FileReader(staff))) {
 			while ((line = br.readLine()) != null) {
 				if (ready) {
-					cs = con.prepareCall("{? = call createStaff(?, ?, ?, ?, ?)}");
+					cs = con.prepareCall("{? = call createStaff(?, ?, ?, ?)}");
 					cs.registerOutParameter(1, Types.INTEGER);
 				}
 				if (isHeader) {
@@ -116,7 +116,7 @@ public class CSVParser {
 						try {
 							if (headers.get(curHeader).equals("Role")) {
 								if (ready)
-									cs.setString(6, col);
+									cs.setString(5, col);
 							}
 							if (headers.get(curHeader).equals("Staff Name")) {
 								String[] name = col.split(" ");
@@ -132,13 +132,9 @@ public class CSVParser {
 								}
 
 							}
-							if (headers.get(curHeader).equals("TeamName")) {
+							if (headers.get(curHeader).equals("Team Name")) {
 								if (ready)
 									cs.setString(4, col);
-							}
-							if (headers.get(curHeader).equals("Salary")) {
-								if (ready)
-									cs.setString(5, col);
 							}
 						} catch (Exception e) {
 						}
