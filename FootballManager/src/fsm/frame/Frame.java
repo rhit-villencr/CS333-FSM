@@ -398,8 +398,8 @@ public class Frame {
 		refreshBtnPnl.add(userButton);
 		refreshBtnPnl.add(refresh);
 		dropdownPnl.add(cb);
-		dropdownPnl.add(posCB);
 		dropdownPnl.add(viewCB);
+		dropdownPnl.add(posCB);
 		topPnl.add(refreshBtnPnl, BorderLayout.WEST);
 		topPnl.add(dropdownPnl, BorderLayout.CENTER);
 		topPnl.add(checkboxPnl, BorderLayout.EAST);
