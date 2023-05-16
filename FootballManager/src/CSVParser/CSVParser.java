@@ -83,15 +83,15 @@ public class CSVParser {
 
 		connect();
 
-		insertTeam();
-
-		insertPlayer();
+//		insertTeam();
+//
+//		insertPlayer();
 		
 		insertOffensivePlayer();
 		insertDefensivePlayer();
 		insertSpecialTeamsPlayer();
 		
-		insertStaff();
+//		insertStaff();
 
 		long endTime = System.nanoTime();
 		long totalTime = endTime - startTime;
@@ -99,15 +99,21 @@ public class CSVParser {
 	}
 
 	public static void insertOffensivePlayer() {
-	
+		String staff = csvFolder + "OffensivePlayers.csv";
+		String line = "";
+		String cvsSplitBy = ",";
 	}
 	
 	public static void insertDefensivePlayer() {
-		
+		String staff = csvFolder + "DefensivePlayers.csv";
+		String line = "";
+		String cvsSplitBy = ",";
 	}
 	
 	public static void insertSpecialTeamsPlayer() {
-		
+		String staff = csvFolder + "SpecialTeamsPlayers.csv";
+		String line = "";
+		String cvsSplitBy = ",";
 	}
 	
 	public static void insertStaff() {
