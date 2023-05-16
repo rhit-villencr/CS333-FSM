@@ -91,15 +91,41 @@ public class Frame {
 	}
 
 	public void searchFrame(DatabaseConnectionService con) {
-			///// Removing possible old values
-			frame.dispose();
-			frame = new JFrame();
-			/////
-			
-			
-			formatFrame(con);
+		///// Removing possible old values
+		frame.dispose();
+		frame = new JFrame();
+		/////
+
+		DatabaseConnectionService dcs = con;
+
+		JLabel fname = new JLabel("First Name:");
+		JTextField PFname = new JTextField(8);
+		JLabel lname = new JLabel("Last Name:");
+		JTextField PLname = new JTextField(8);
+		JButton search = new JButton("Search");
+
+		search.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				System.out.println("FirstName: " + PFname.getText() + "\nLastName: " + PLname.getText());
+				PFname.setText("");
+				PLname.setText("");
+			}
+		});
+
+		JPanel top = new JPanel();
+
+		top.add(fname);
+		top.add(PFname);
+		top.add(lname);
+		top.add(PLname);
+		top.add(search);
+
+		frame.add(top);
+
+		formatFrame(con);
 	}
-	
+
 	/**
 	 * 
 	 * @param con
@@ -342,6 +368,16 @@ public class Frame {
 		});
 		/////
 
+		///// Button for search
+		JButton searchButton = new JButton("Search");
+		searchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Swapped to search frame");
+				searchFrame(con);
+			}
+		});
+		/////
+
 		///// Creating the button to refresh the JFrame
 		JButton refresh = new JButton("Refresh Results");
 		refresh.addActionListener(new ActionListener() {
@@ -406,6 +442,7 @@ public class Frame {
 
 		///// Adding components to all the panels
 		refreshBtnPnl.add(userButton);
+		refreshBtnPnl.add(searchButton);
 		refreshBtnPnl.add(refresh);
 		dropdownPnl.add(cb);
 		dropdownPnl.add(viewCB);
