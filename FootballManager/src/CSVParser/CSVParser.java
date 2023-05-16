@@ -27,7 +27,7 @@ public class CSVParser {
 
 	static DatabaseConnectionService dbs = null;
 	
-	//Chase Laptop
+	//Chase RHIT Laptop
     //static String csvFolder = "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
 	
 	//Chase PC
