@@ -36,6 +36,20 @@ public class UserService {
 		return true;
 	}
 
+	public void removeAccount(String username) {
+		Connection con = this.dbService.getConnection();
+
+		try {
+			CallableStatement cs = con.prepareCall("{? = call deleteUser(?)}");
+			cs.registerOutParameter(1, Types.INTEGER);
+			cs.setString(2, username);
+			cs.execute();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 
 	 * @param username

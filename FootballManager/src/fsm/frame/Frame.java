@@ -217,11 +217,15 @@ public class Frame {
 		///// Removing possible old values
 		frame.dispose();
 		frame = new JFrame();
+		UserService serv = new UserService(con);
 		/////
 
 		///// Create objects
 		JButton submit = new JButton("Update Profile");
 		JButton back = new JButton("Back To Tables");
+		JButton deleteProfile = new JButton("Delete Profile");
+		JButton logout = new JButton("Logout");
+
 
 		JLabel teamName = new JLabel("Enter Favorite Team");
 		JTextField favTeam = new JTextField(8);
@@ -261,7 +265,21 @@ public class Frame {
 				launchView(con);
 			}
 		});
+		
+		deleteProfile.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					serv.removeAccount(userName);
+					launchLogin(con);
+				}
+			});
+			
+		logout.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					launchLogin(con);
+				}
+			});
 		/////
+		
 
 		///// Add to panels
 		teamBox.add(teamName);
@@ -275,6 +293,8 @@ public class Frame {
 
 		submitPanel.add(submit);
 		submitPanel.add(back);
+		submitPanel.add(deleteProfile);
+		submitPanel.add(logout);
 
 		input.add(teamBox);
 		input.add(playerBoxF);
@@ -509,7 +529,12 @@ public class Frame {
 		for (var = 0; var < table.getColumnCount(); var++) {
 			l_Col = table.getColumn(table.getColumnName(var));
 			width = columnHeaderWidth(table, l_Col) + 6;
-			l_Col.setMinWidth(175);
+			if(curView.equals("Players")) {
+				l_Col.setMinWidth(175);
+			}else {
+				l_Col.setMinWidth(225);
+			}
+			
 			l_Col.setMaxWidth(width);
 		}
 		/////
