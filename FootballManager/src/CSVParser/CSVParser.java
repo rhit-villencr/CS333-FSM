@@ -26,12 +26,14 @@ import fsm.services.DatabaseConnectionService;
 public class CSVParser {
 
 	static DatabaseConnectionService dbs = null;
-	
-	//Chase RHIT Laptop
-    //static String csvFolder = "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
-	
-	//Chase PC
-	static String csvFolder = "A:\\280\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\"; 
+
+	// Chase RHIT Laptop
+	// static String csvFolder =
+	// "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV
+	// Files\\";
+
+	// Chase PC
+	static String csvFolder = "A:\\280\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
 
 	public static void connect() {
 		String serverName = "";
@@ -86,11 +88,11 @@ public class CSVParser {
 //		insertTeam();
 //
 //		insertPlayer();
-		
-		insertOffensivePlayer();
-		insertDefensivePlayer();
+
+//		insertOffensivePlayer();
+//		insertDefensivePlayer();
 		insertSpecialTeamsPlayer();
-		
+
 //		insertStaff();
 
 		long endTime = System.nanoTime();
@@ -99,23 +101,323 @@ public class CSVParser {
 	}
 
 	public static void insertOffensivePlayer() {
-		String staff = csvFolder + "OffensivePlayers.csv";
+		String offPlayers = csvFolder + "OffensivePlayers.csv";
 		String line = "";
 		String cvsSplitBy = ",";
+		boolean isHeader = true;
+		int curHeader = 0;
+		ArrayList<String> headers = new ArrayList<String>();
+		Connection con = dbs.getConnection();
+		CallableStatement cs = null;
+		boolean ready = false;
+		try (BufferedReader br = new BufferedReader(new FileReader(offPlayers))) {
+			while ((line = br.readLine()) != null) {
+				if (ready) {
+//					cs = con.prepareCall("{? = call createOffensivePlayer(?, ?, ?, ?)}");
+//					cs.registerOutParameter(1, Types.INTEGER);
+				}
+				if (isHeader) {
+					String[] row = line.split(cvsSplitBy);
+					for (String col : row) {
+						headers.add(col);
+					}
+					isHeader = false;
+				} else {
+					String[] row = line.split(cvsSplitBy);
+					for (String col : row) {
+						try {
+							if (headers.get(curHeader).equals("RushingTD")) {
+								if (ready) {
+//									cs.setString(5, col);
+									System.out.println("RushingTD: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("Player")) {
+								String[] name = col.split(" ");
+								if (ready) {
+//									cs.setString(2, name[0]);
+									System.out.println("FirstName: " + name[0]);
+
+									String lname = "";
+									for (int i = 1; i < name.length; i++) {
+										lname += name[i];
+										lname += " ";
+									}
+									lname = lname.substring(0, lname.length() - 1);
+//									cs.setString(3, lname);
+									System.out.println("FirstName: " + lname);
+
+								}
+							}
+							if (headers.get(curHeader).equals("PassingCompletions")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("PassingCompletions: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("Int")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("Int: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("PassingAttempts")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("PassingAttempts: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("ReceivingYards")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("ReceivingYards: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("RushingAttempts")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("RushingAttempts: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("PassingYards")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("PassingYards: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("PassingTD")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("PassingTD: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("RushingYards")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("RushingYards: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("ReceivingTD")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("ReceivingTD: " + col);
+								}
+							}
+						} catch (Exception e) {
+						}
+						curHeader++;
+					}
+				}
+				curHeader = 0;
+//				if (ready)
+//					cs.execute();
+				ready = true;
+				System.out.println("------------");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//		catch (SQLException e1) {
+//			e1.printStackTrace();
+//		}
 	}
-	
+
 	public static void insertDefensivePlayer() {
-		String staff = csvFolder + "DefensivePlayers.csv";
+		String defPlayers = csvFolder + "DefensivePlayers.csv";
 		String line = "";
 		String cvsSplitBy = ",";
+		boolean isHeader = true;
+		int curHeader = 0;
+		ArrayList<String> headers = new ArrayList<String>();
+		Connection con = dbs.getConnection();
+		CallableStatement cs = null;
+		boolean ready = false;
+		try (BufferedReader br = new BufferedReader(new FileReader(defPlayers))) {
+			while ((line = br.readLine()) != null) {
+				if (ready) {
+//					cs = con.prepareCall("{? = call createOffensivePlayer(?, ?, ?, ?)}");
+//					cs.registerOutParameter(1, Types.INTEGER);
+				}
+				if (isHeader) {
+					String[] row = line.split(cvsSplitBy);
+					for (String col : row) {
+						headers.add(col);
+					}
+					isHeader = false;
+				} else {
+					String[] row = line.split(cvsSplitBy);
+					for (String col : row) {
+						try {
+							if (headers.get(curHeader).equals("NumTackles")) {
+								if (ready) {
+//									cs.setString(5, col);
+									System.out.println("NumTackles: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("Player")) {
+								String[] name = col.split(" ");
+								if (ready) {
+//									cs.setString(2, name[0]);
+									System.out.println("FirstName: " + name[0]);
+
+									String lname = "";
+									for (int i = 1; i < name.length; i++) {
+										lname += name[i];
+										lname += " ";
+									}
+									lname = lname.substring(0, lname.length() - 1);
+//									cs.setString(3, lname);
+									System.out.println("FirstName: " + lname);
+
+								}
+							}
+							if (headers.get(curHeader).equals("PD")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("PD: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("Int")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("Int: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("Fumb")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("Fumb: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("FumbRec")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("FumbRec: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("TD")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("TD: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("Sacks")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("Sacks: " + col);
+								}
+							}
+						} catch (Exception e) {
+						}
+						curHeader++;
+					}
+				}
+				curHeader = 0;
+//				if (ready)
+//					cs.execute();
+				ready = true;
+				System.out.println("------------");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//		catch (SQLException e1) {
+//			e1.printStackTrace();
+//		}
 	}
-	
+
 	public static void insertSpecialTeamsPlayer() {
-		String staff = csvFolder + "SpecialTeamsPlayers.csv";
+		String specPlayers = csvFolder + "SpecialTeamsPlayers.csv";
 		String line = "";
 		String cvsSplitBy = ",";
+		boolean isHeader = true;
+		int curHeader = 0;
+		ArrayList<String> headers = new ArrayList<String>();
+		Connection con = dbs.getConnection();
+		CallableStatement cs = null;
+		boolean ready = false;
+		try (BufferedReader br = new BufferedReader(new FileReader(specPlayers))) {
+			while ((line = br.readLine()) != null) {
+				if (ready) {
+//					cs = con.prepareCall("{? = call createOffensivePlayer(?, ?, ?, ?)}");
+//					cs.registerOutParameter(1, Types.INTEGER);
+				}
+				if (isHeader) {
+					String[] row = line.split(cvsSplitBy);
+					for (String col : row) {
+						headers.add(col);
+					}
+					isHeader = false;
+				} else {
+					String[] row = line.split(cvsSplitBy);
+					for (String col : row) {
+						try {
+							if (headers.get(curHeader).equals("FGA")) {
+								if (ready) {
+//									cs.setString(5, col);
+									System.out.println("FGA: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("Player")) {
+								String[] name = col.split(" ");
+								if (ready) {
+//									cs.setString(2, name[0]);
+									System.out.println("FirstName: " + name[0]);
+
+									String lname = "";
+									for (int i = 1; i < name.length; i++) {
+										lname += name[i];
+										lname += " ";
+									}
+									lname = lname.substring(0, lname.length() - 1);
+//									cs.setString(3, lname);
+									System.out.println("FirstName: " + lname);
+
+								}
+							}
+							if (headers.get(curHeader).equals("FGM")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("FGM: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("XPA")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("XPA: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("XPM")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("XPM: " + col);
+								}
+							}
+							if (headers.get(curHeader).equals("Y/P")) {
+								if (ready) {
+//									cs.setString(4, col);
+									System.out.println("Y/P: " + col);
+								}
+							}
+						} catch (Exception e) {
+						}
+						curHeader++;
+					}
+				}
+				curHeader = 0;
+//				if (ready)
+//					cs.execute();
+				ready = true;
+				System.out.println("------------");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//		catch (SQLException e1) {
+//			e1.printStackTrace();
+//		}
 	}
-	
+
 	public static void insertStaff() {
 		String staff = csvFolder + "Staff.csv";
 		String line = "";
