@@ -55,7 +55,6 @@ public class Main {
 			System.out.println("Failed Connection To: " + databaseName);
 			System.exit(0);
 		}
-
 		/////
 
 		///// Create new frame and run the startup function

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class SQLDatabaseResult {
-	
+
 	public static String[] getPlayer(DatabaseConnectionService dbService, String fName, String lName) {
 		try {
 			///// Creating a callable statement that calls a SPROC from the database
@@ -22,41 +22,34 @@ public class SQLDatabaseResult {
 			boolean results = cs.execute();
 			while (results) {
 				ResultSet rs = cs.getResultSet();
-				// Retrieve data from the result set.
 				while (rs.next()) {
-					// using rs.getxxx() method to retrieve data
 					int i = 1;
-					while(true) {
+					while (true) {
 						try {
 							row.add(rs.getString(i));
-						}catch(SQLException e) {
+						} catch (SQLException e) {
 							break;
 						}
 						i++;
 					}
-					
 				}
 				rs.close();
-				// Check for next result set
 				results = cs.getMoreResults();
 			}
 			cs.close();
-			
 			String[] returnData = new String[row.size()];
 			for (int i = 0; i < row.size(); i++) {
 				returnData[i] = row.get(i);
 			}
-			if(returnData.length == 0) return null;
-			/////
+			if (returnData.length == 0)
+				return null;
 			return returnData;
-			
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	public static String[] getTeams(DatabaseConnectionService dbService) {
 		try {
 			///// Creating a callable statement that calls a SPROC from the database
@@ -91,6 +84,7 @@ public class SQLDatabaseResult {
 			return null;
 		}
 	}
+
 	/**
 	 * 
 	 * @param dbService
@@ -106,19 +100,15 @@ public class SQLDatabaseResult {
 			///// Create a callable statement to updateUser
 			CallableStatement cs = dbService.getConnection().prepareCall("{? = call updateUser(?, ?, ?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
-
 			cs.setString(2, userName);
 			cs.setString(3, favTeam);
 			cs.setString(4, favPlayerFName);
 			cs.setString(5, favPlayerLName);
-//			System.out.println(userName + "\n" + favTeam + "\n" + favPlayerFName + "\n" + favPlayerLName);
-
 			cs.execute();
 			/////
 
 			///// Check return values of the SPROC
 			int returnValue = cs.getInt(1);
-
 			if (returnValue == 0) {
 				JOptionPane.showMessageDialog(null, "Update Successful");
 			} else if (returnValue == 1) {
@@ -153,10 +143,9 @@ public class SQLDatabaseResult {
 			ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 			while (results) {
 				ResultSet rs = cs.getResultSet();
-//				System.out.println(getHeaders(connection, team)[0]);
 				while (rs.next()) {
 					ArrayList<String> temp = new ArrayList<String>();
-					
+
 					for (int i = 0; i < getHeaders(dbService, type).length; i++) {
 						temp.add(rs.getString(i + 1));
 					}
@@ -199,16 +188,14 @@ public class SQLDatabaseResult {
 	/* Returns a 1d array of the headers of a given table in a given database */
 	public static String[] getHeaders(DatabaseConnectionService dbService, String type) {
 		String[] headers = null;
-		
-		if(type.equals("Players")) {
-			String[] pl = {"FirstName", "LastName", "Position", "Salary"};
+		if (type.equals("Players")) {
+			String[] pl = { "FirstName", "LastName", "Position", "Salary" };
 			headers = pl;
 		}
-		if(type.equals("Staff")) {
-			String[] pl = {"FirstName", "LastName", "Role"};
+		if (type.equals("Staff")) {
+			String[] pl = { "FirstName", "LastName", "Role" };
 			headers = pl;
 		}
-		
 		return headers;
 	}
 

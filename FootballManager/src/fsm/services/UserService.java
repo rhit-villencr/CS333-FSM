@@ -29,16 +29,10 @@ public class UserService {
 
 	public UserService(DatabaseConnectionService dbService) {
 		this.dbService = dbService;
-
-	}
-
-	public boolean useApplicationLogins() {
-		return true;
 	}
 
 	public void removeAccount(String username) {
 		Connection con = this.dbService.getConnection();
-
 		try {
 			CallableStatement cs = con.prepareCall("{? = call deleteUser(?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
@@ -58,7 +52,6 @@ public class UserService {
 	 */
 	public boolean login(String username, String password) {
 		Connection con = this.dbService.getConnection();
-
 		try {
 			CallableStatement cs = con.prepareCall("{? = call getUser(?, ?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
@@ -89,7 +82,6 @@ public class UserService {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 
 	/**
@@ -105,14 +97,11 @@ public class UserService {
 		try {
 			CallableStatement cs = this.dbService.getConnection().prepareCall("{? = call createUser(?, ?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
-
 			cs.setString(2, username);
 			cs.setString(3, getStringFromBytes(newSalt));
 			cs.setString(4, passHash);
-
 			cs.execute();
 			int returnValue = cs.getInt(1);
-
 			if (returnValue == 4) {
 				JOptionPane.showMessageDialog(null, "ERROR: Username already exists.");
 				return false;
@@ -127,12 +116,10 @@ public class UserService {
 				return false;
 			}
 			return true;
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Add User not working.");
 			return false;
-
 		}
 	}
 
@@ -157,7 +144,6 @@ public class UserService {
 	 * @return String
 	 */
 	public String hashPassword(byte[] salt, String password) {
-
 		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
 		SecretKeyFactory f;
 		byte[] hash = null;
@@ -173,5 +159,4 @@ public class UserService {
 		}
 		return getStringFromBytes(hash);
 	}
-
 }

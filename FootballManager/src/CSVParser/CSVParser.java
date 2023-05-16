@@ -25,7 +25,7 @@ import fsm.services.DatabaseConnectionService;
  */
 public class CSVParser {
 
-	static DatabaseConnectionService dbs = null;
+	static DatabaseConnectionService dbService = null;
 
 	// Chase RHIT Laptop
 	// static String csvFolder =
@@ -39,7 +39,6 @@ public class CSVParser {
 		String databaseName = "";
 		String username = "";
 		String password = "";
-		/////
 
 		///// Load variables from properties file
 		try {
@@ -62,18 +61,19 @@ public class CSVParser {
 		/////
 
 		///// Initialize DatabaseConnectionService class
-		dbs = new DatabaseConnectionService(serverName, databaseName);
+		dbService = new DatabaseConnectionService(serverName, databaseName);
 		/////
 
 		///// Attempt to connect, if failed, abort
 		try {
-			dbs.connect(username, password);
+			dbService.connect(username, password);
 			System.out.println("Successfully Connected To: " + databaseName);
 
 		} catch (Exception e) {
 			System.out.println("Failed Connection To: " + databaseName);
 			System.exit(0);
 		}
+		/////
 	}
 
 	/**
@@ -81,19 +81,13 @@ public class CSVParser {
 	 */
 	public static void main(String[] args) {
 		long startTime = System.nanoTime();
-
 		connect();
-
 		insertTeam();
-
 		insertPlayer();
-
 		insertOffensivePlayer();
 		insertDefensivePlayer();
 		insertSpecialTeamsPlayer();
-
 		insertStaff();
-
 		long endTime = System.nanoTime();
 		long totalTime = endTime - startTime;
 		System.out.println(totalTime / 1000000000 + " seconds to populate databse.");
@@ -106,7 +100,7 @@ public class CSVParser {
 		boolean isHeader = true;
 		int curHeader = 0;
 		ArrayList<String> headers = new ArrayList<String>();
-		Connection con = dbs.getConnection();
+		Connection con = dbService.getConnection();
 		CallableStatement cs = null;
 		boolean ready = false;
 		try (BufferedReader br = new BufferedReader(new FileReader(offPlayers))) {
@@ -128,15 +122,12 @@ public class CSVParser {
 							if (headers.get(curHeader).equals("RushingTD")) {
 								if (ready) {
 									cs.setString(2, col);
-//									System.out.println("RushingTD: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("Player")) {
 								String[] name = col.split(" ");
 								if (ready) {
 									cs.setString(13, name[0]);
-//									System.out.println("FirstName: " + name[0]);
-
 									String lname = "";
 									for (int i = 1; i < name.length; i++) {
 										lname += name[i];
@@ -144,62 +135,51 @@ public class CSVParser {
 									}
 									lname = lname.substring(0, lname.length() - 1);
 									cs.setString(12, lname);
-//									System.out.println("FirstName: " + lname);
-
 								}
 							}
 							if (headers.get(curHeader).equals("PassingCompletions")) {
 								if (ready) {
 									cs.setString(3, col);
-//									System.out.println("PassingCompletions: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("Int")) {
 								if (ready) {
 									cs.setString(4, col);
-//									System.out.println("Int: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("PassingAttempts")) {
 								if (ready) {
 									cs.setString(5, col);
-//									System.out.println("PassingAttempts: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("ReceivingYards")) {
 								if (ready) {
 									cs.setString(6, col);
-//									System.out.println("ReceivingYards: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("RushingAttempts")) {
 								if (ready) {
 									cs.setString(7, col);
-//									System.out.println("RushingAttempts: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("PassingYards")) {
 								if (ready) {
 									cs.setString(8, col);
-//									System.out.println("PassingYards: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("PassingTD")) {
 								if (ready) {
 									cs.setString(9, col);
-//									System.out.println("PassingTD: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("RushingYards")) {
 								if (ready) {
 									cs.setString(10, col);
-//									System.out.println("RushingYards: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("ReceivingTD")) {
 								if (ready) {
 									cs.setString(11, col);
-//									System.out.println("ReceivingTD: " + col);
 								}
 							}
 						} catch (Exception e) {
@@ -211,7 +191,6 @@ public class CSVParser {
 				if (ready)
 					cs.execute();
 				ready = true;
-//				System.out.println("------------");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -227,7 +206,7 @@ public class CSVParser {
 		boolean isHeader = true;
 		int curHeader = 0;
 		ArrayList<String> headers = new ArrayList<String>();
-		Connection con = dbs.getConnection();
+		Connection con = dbService.getConnection();
 		CallableStatement cs = null;
 		boolean ready = false;
 		try (BufferedReader br = new BufferedReader(new FileReader(defPlayers))) {
@@ -249,15 +228,12 @@ public class CSVParser {
 							if (headers.get(curHeader).equals("NumTackles")) {
 								if (ready) {
 									cs.setString(2, col);
-//									System.out.println("NumTackles: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("Player")) {
 								String[] name = col.split(" ");
 								if (ready) {
 									cs.setString(10, name[0]);
-//									System.out.println("FirstName: " + name[0]);
-
 									String lname = "";
 									for (int i = 1; i < name.length; i++) {
 										lname += name[i];
@@ -265,44 +241,36 @@ public class CSVParser {
 									}
 									lname = lname.substring(0, lname.length() - 1);
 									cs.setString(9, lname);
-//									System.out.println("LastName: " + lname);
-
 								}
 							}
 							if (headers.get(curHeader).equals("PD")) {
 								if (ready) {
 									cs.setString(8, col);
-//									System.out.println("PD: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("Int")) {
 								if (ready) {
 									cs.setString(7, col);
-//									System.out.println("Int: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("Fumb")) {
 								if (ready) {
 									cs.setString(4, col);
-//									System.out.println("Fumb: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("FumbRec")) {
 								if (ready) {
 									cs.setString(5, col);
-//									System.out.println("FumbRec: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("TD")) {
 								if (ready) {
 									cs.setString(6, col);
-//									System.out.println("TD: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("Sacks")) {
 								if (ready) {
 									cs.setString(3, col);
-//									System.out.println("Sacks: " + col);
 								}
 							}
 						} catch (Exception e) {
@@ -333,7 +301,7 @@ public class CSVParser {
 		boolean isHeader = true;
 		int curHeader = 0;
 		ArrayList<String> headers = new ArrayList<String>();
-		Connection con = dbs.getConnection();
+		Connection con = dbService.getConnection();
 		CallableStatement cs = null;
 		boolean ready = false;
 		try (BufferedReader br = new BufferedReader(new FileReader(specPlayers))) {
@@ -355,15 +323,12 @@ public class CSVParser {
 							if (headers.get(curHeader).equals("FGA")) {
 								if (ready) {
 									cs.setString(2, col);
-//									System.out.println("FGA: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("Player")) {
 								String[] name = col.split(" ");
 								if (ready) {
 									cs.setString(8, name[0]);
-//									System.out.println("FirstName: " + name[0]);
-
 									String lname = "";
 									for (int i = 1; i < name.length; i++) {
 										lname += name[i];
@@ -371,32 +336,26 @@ public class CSVParser {
 									}
 									lname = lname.substring(0, lname.length() - 1);
 									cs.setString(7, lname);
-//									System.out.println("FirstName: " + lname);
-
 								}
 							}
 							if (headers.get(curHeader).equals("FGM")) {
 								if (ready) {
 									cs.setString(3, col);
-//									System.out.println("FGM: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("XPA")) {
 								if (ready) {
 									cs.setString(5, col);
-//									System.out.println("XPA: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("XPM")) {
 								if (ready) {
 									cs.setString(4, col);
-//									System.out.println("XPM: " + col);
 								}
 							}
 							if (headers.get(curHeader).equals("Y/P")) {
 								if (ready) {
 									cs.setString(6, col);
-//									System.out.println("Y/P: " + col);
 								}
 							}
 						} catch (Exception e) {
@@ -408,7 +367,6 @@ public class CSVParser {
 				if (ready)
 					cs.execute();
 				ready = true;
-//				System.out.println("------------");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -424,7 +382,7 @@ public class CSVParser {
 		boolean isHeader = true;
 		int curHeader = 0;
 		ArrayList<String> headers = new ArrayList<String>();
-		Connection con = dbs.getConnection();
+		Connection con = dbService.getConnection();
 		CallableStatement cs = null;
 		boolean ready = false;
 		try (BufferedReader br = new BufferedReader(new FileReader(staff))) {
@@ -459,7 +417,6 @@ public class CSVParser {
 									lname = lname.substring(0, lname.length() - 1);
 									cs.setString(3, lname);
 								}
-
 							}
 							if (headers.get(curHeader).equals("Team Name")) {
 								if (ready)
@@ -491,7 +448,7 @@ public class CSVParser {
 		boolean isHeader = true;
 		int curHeader = 0;
 		ArrayList<String> headers = new ArrayList<String>();
-		Connection con = dbs.getConnection();
+		Connection con = dbService.getConnection();
 		CallableStatement cs = null;
 		boolean ready = false;
 		try (BufferedReader br = new BufferedReader(new FileReader(teams))) {
@@ -562,7 +519,7 @@ public class CSVParser {
 		boolean isHeader = true;
 		int curHeader = 0;
 		ArrayList<String> headers = new ArrayList<String>();
-		Connection con = dbs.getConnection();
+		Connection con = dbService.getConnection();
 		CallableStatement cs = null;
 		boolean ready = false;
 		try (BufferedReader br = new BufferedReader(new FileReader(person))) {
@@ -596,7 +553,6 @@ public class CSVParser {
 									}
 									lname = lname.substring(0, lname.length() - 1);
 									cs.setString(3, lname);
-
 								}
 							}
 							if (headers.get(curHeader).equals("TeamName")) {
