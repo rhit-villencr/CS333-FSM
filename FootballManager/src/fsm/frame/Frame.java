@@ -10,6 +10,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
 import java.util.Vector;
 import fsm.services.DatabaseConnectionService;
 import fsm.services.SQLDatabaseResult;
@@ -32,6 +33,10 @@ public class Frame {
 	String userName;
 	String position = "QB";
 	String curView = "Players";
+
+	String[] playerSearch = null;
+	JTable table = null;
+	DefaultTableModel tableModel = null;
 	/////
 
 	/**
@@ -102,26 +107,103 @@ public class Frame {
 		JTextField PFname = new JTextField(8);
 		JLabel lname = new JLabel("Last Name:");
 		JTextField PLname = new JTextField(8);
-		JButton search = new JButton("Search");
 
+		JButton search = new JButton("Search");
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				System.out.println("FirstName: " + PFname.getText() + "\nLastName: " + PLname.getText());
+//				System.out.println("FirstName: " + PFname.getText() + "\nLastName: " + PLname.getText());
+				playerSearch = SQLDatabaseResult.getPlayer(con, PFname.getText(), PLname.getText());
 				PFname.setText("");
 				PLname.setText("");
+				searchFrame(con);
 			}
 		});
 
-		JPanel top = new JPanel();
+		JButton back = new JButton("Back");
+		back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				playerSearch = null;
+				launchView(con);
+			}
+		});
 
+		if (playerSearch != null) {
+			tableModel = new DefaultTableModel();
+			table = new JTable(tableModel) {
+				@Override
+				public Dimension getPreferredScrollableViewportSize() {
+					return new Dimension(super.getPreferredSize().width, getRowHeight() * getRowCount());
+				}
+			};
+			/////
+
+			///// Getting the headers and adding them to the table
+			String[] headers = null;
+//			System.out.println(playerSearch.length);
+			if (playerSearch.length == 15) {// Offense
+				headers = new String[] { "FirstName", "LastName", "Salary", "TeamName", "Position", "RushTD",
+						"PassComp", "Interceptions", "PassAttempts", "RecievingYards", "RushAttempts", "PassYards",
+						"PassingTD", "RushingYards", "ReceivingTD" };
+			} else if (playerSearch.length == 13) {// Defense
+				headers = new String[] { "FirstName", "LastName", "Salary", "TeamName", "Position", "Tackles", "Sacks",
+						"ForcedFumbles", "FubleRecoveries", "Touchdowns", "Interceptions", "PassDeflections" };
+			} else if (playerSearch.length == 10) {// Special
+				headers = new String[] { "FirstName", "LastName", "Salary", "TeamName", "Position", "Tackles", "Sacks",
+						"ForcedFumbles", "FumbleRecoveries", "Touchdowns", "Interceptions", "PassDeflections" };
+			} else {// Player
+				headers = new String[] { "FirstName", "LastName", "Salary", "TeamName", "Position" };
+
+			}
+
+//			System.out.println(curView);
+			for (int i = 0; i < headers.length; i++) {
+//				System.out.println("Added Header: " + headers[i]);
+				tableModel.addColumn(headers[i]);
+			}
+			/////
+
+			///// Inputting collected data into the table
+			Vector<Object> newRow = new Vector<Object>();
+			for (int i = 0; i < playerSearch.length; i++) {
+				newRow.add(playerSearch[i]);
+			}
+			tableModel.addRow(newRow);
+
+			/////
+
+			///// Standardizing minimum column width
+			int var, width;
+			TableColumn l_Col;/* from www.java2s.com */
+			for (var = 0; var < table.getColumnCount(); var++) {
+				l_Col = table.getColumn(table.getColumnName(var));
+				width = columnHeaderWidth(table, l_Col) + 6;
+				l_Col.setMinWidth(100);
+				l_Col.setMaxWidth(width);
+			}
+		}
+
+		JPanel top = new JPanel();
+		frame.setLayout(new BorderLayout());
+		top.add(back);
 		top.add(fname);
 		top.add(PFname);
 		top.add(lname);
 		top.add(PLname);
 		top.add(search);
 
-		frame.add(top);
+		if (playerSearch != null) {
+			table.getTableHeader().setReorderingAllowed(false);
+			table.setDefaultEditor(Object.class, null);
+			/////
+
+			///// Adding the table and the panel to the JFrame
+			frame.add(table.getTableHeader(), BorderLayout.CENTER);
+//			System.out.println(table.getTableHeader());
+			frame.add(table, BorderLayout.SOUTH);
+		}
+
+		frame.add(top, BorderLayout.NORTH);
 
 		formatFrame(con);
 	}
@@ -369,7 +451,7 @@ public class Frame {
 		/////
 
 		///// Button for search
-		JButton searchButton = new JButton("Search");
+		JButton searchButton = new JButton("Player Search");
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Swapped to search frame");
@@ -427,7 +509,7 @@ public class Frame {
 		for (var = 0; var < table.getColumnCount(); var++) {
 			l_Col = table.getColumn(table.getColumnName(var));
 			width = columnHeaderWidth(table, l_Col) + 6;
-			l_Col.setMinWidth(150);
+			l_Col.setMinWidth(175);
 			l_Col.setMaxWidth(width);
 		}
 		/////
@@ -472,7 +554,7 @@ public class Frame {
 	 */
 	public void formatFrame(DatabaseConnectionService con) {
 		///// Adding a bunch of JFrame setting to make it look better
-		frame.setTitle(userName);
+		frame.setTitle("User: " + userName);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override

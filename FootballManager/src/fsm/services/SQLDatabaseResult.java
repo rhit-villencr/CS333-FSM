@@ -11,6 +11,52 @@ import javax.swing.JOptionPane;
 
 public class SQLDatabaseResult {
 	
+	public static String[] getPlayer(DatabaseConnectionService connection, String fName, String lName) {
+		try {
+			///// Creating a callable statement that calls a SPROC from the database
+			CallableStatement cs = connection.getConnection().prepareCall("{? = call viewSelectPlayer(?, ?)}");
+			cs.registerOutParameter(1, Types.INTEGER);
+			cs.setString(2, fName);
+			cs.setString(3, lName);
+			ArrayList<String> row = new ArrayList<String>();
+			boolean results = cs.execute();
+			while (results) {
+				ResultSet rs = cs.getResultSet();
+				// Retrieve data from the result set.
+				while (rs.next()) {
+					// using rs.getxxx() method to retrieve data
+					int i = 1;
+					while(true) {
+						try {
+							row.add(rs.getString(i));
+						}catch(SQLException e) {
+							break;
+						}
+						i++;
+					}
+					
+				}
+				rs.close();
+				// Check for next result set
+				results = cs.getMoreResults();
+			}
+			cs.close();
+			
+			String[] returnData = new String[row.size()];
+			for (int i = 0; i < row.size(); i++) {
+				returnData[i] = row.get(i);
+			}
+			if(returnData.length == 0) return null;
+			/////
+			return returnData;
+			
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public static String[] getTeams(DatabaseConnectionService connection) {
 		try {
 			///// Creating a callable statement that calls a SPROC from the database

@@ -29,8 +29,7 @@ public class CSVParser {
 
 	// Chase RHIT Laptop
 	// static String csvFolder =
-	// "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV
-	// Files\\";
+	// "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSVFiles\\";
 
 	// Chase PC
 	static String csvFolder = "A:\\280\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
@@ -599,7 +598,6 @@ public class CSVParser {
 									cs.setString(3, lname);
 
 								}
-
 							}
 							if (headers.get(curHeader).equals("TeamName")) {
 								if (ready)

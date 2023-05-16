@@ -1,9 +1,6 @@
 Player,NumTackles,Int,PD,Fumb,FumbRec,TD,Age,Sacks
 Calais Campbell,809,3,57,1,12,3,22-36,99
-Clark Harris,32,0,0,0,0,0,25-38,0
-J.J. Jansen,20,0,0,1,0,0,23-36,0
 Tyson Alualu,416,0,15,0,3,0,23-35,25
-Morgan Cox,12,0,0,1,1,0,24-36,0
 Carlos Dunlap,578,2,77,0,9,3,21-33,100
 Brandon Graham,451,0,8,0,7,1,22-34,70
 Jerry Hughes,447,2,21,0,5,2,22-34,67
@@ -12,7 +9,6 @@ Linval Joseph,664,0,6,0,5,1,22-34,25.5
 Devin McCourty,971,35,110,1,7,4,23-35,3
 Jason Pierre-Paul,629,5,66,0,10,3,21-33,94.5
 Ndamukong Suh,600,1,38,0,9,3,23-35,71.5
-Jon Weeks,30,0,0,0,1,0,24-36,0
 Mario Addison,296,0,7,0,4,0,24-35,68
 Nick Bellore,224,1,5,1,5,2,22-33,1
 Josh Bynes,582,5,34,0,3,1,22-33,8.5
@@ -20,14 +16,12 @@ Chris Harris Jr.,621,22,97,0,4,4,22-33,6
 Cameron Heyward,614,2,46,0,7,0,22-33,78.5
 Justin Houston,506,5,34,0,14,2,22-33,111.5
 Cameron Jordan,639,2,58,0,10,1,22-33,115.5
-Jake McQuaide,9,0,0,0,0,0,24-35,0
 Corey Peters,336,1,10,0,3,1,22-34,19
 Patrick Peterson,610,34,111,19,12,6,21-32,4
 Robert Quinn,369,0,20,0,3,1,21-32,102
 J.J. Watt,586,2,70,0,17,6,22-33,114.5
 Al Woods,293,0,7,0,2,0,23-35,9
 Justin Bethel,263,5,24,0,8,4,22-32,0
-Aaron Brewer,17,0,0,0,1,0,22-32,0
 Michael Brockers,451,0,10,0,1,0,22-32,29
 Fletcher Cox,486,0,14,0,13,3,22-32,65
 Demario Davis,1136,3,47,0,7,0,23-33,36
@@ -59,7 +53,6 @@ Micah Hyde,590,22,59,5,8,5,23-32,5
 John Jenkins,212,0,4,0,1,0,24-33,2.5
 A.J. Klein,465,4,20,0,4,1,22-31,15.5
 Tyrann Mathieu,701,29,84,0,7,3,21-30,11
-Matt Overton,24,0,0,1,0,0,27-37,0
 Jordan Poyer,706,24,50,1,7,1,22-31,11
 Xavier Rhodes,457,13,92,0,1,2,23-32,0
 Nickell Robey-Coleman,338,6,49,0,6,3,21-30,5
@@ -103,7 +96,6 @@ Arik Armstead,275,0,6,0,1,0,22-29,28.5
 Shaquil Barrett,348,2,16,1,5,0,23-30,54.5
 Angelo Blackson,166,1,8,0,1,0,23-30,8.5
 Bashaud Breeland,439,16,86,0,6,3,22-29,1
-Joe Cardona,14,0,0,0,0,0,23-30,0
 Frank Clark,263,2,13,0,7,0,22-29,58.5
 Justin Coleman,248,6,44,0,4,4,22-29,2
 Landon Collins,691,12,41,0,5,2,21-28,11
@@ -111,7 +103,6 @@ Christian Covington,196,0,2,0,0,0,22-29,9.5
 Ronald Darby,373,8,90,0,1,0,21-28,0
 Tyeler Davison,217,0,4,0,1,0,23-30,5
 Darqueze Dennard,313,4,27,0,1,1,23-30,3
-Andrew DePaola,12,0,0,0,0,0,27-35,0
 Quandre Diggs,485,23,51,0,2,2,22-29,1
 Bud Dupree,266,1,12,0,4,1,22-29,46.5
 Mario Edwards,135,0,5,0,0,0,21-28,19.5
@@ -125,10 +116,8 @@ Shelby Harris,261,1,29,0,0,0,23-31,24.5
 Neville Hewitt,426,3,13,1,2,0,22-29,7.5
 Jordan Hicks,767,12,44,0,9,1,23-30,13.5
 Troy Hill,334,8,34,0,3,3,24-31,3
-Charley Hughlett,20,0,0,0,0,0,25-32,0
 Grady Jarrett,420,0,4,0,3,0,22-29,32.5
 Eric Kendricks,919,9,51,0,6,3,23-30,15
-Rick Lovato,18,0,0,0,0,0,25-30,0
 Josh Mauro,130,0,5,0,1,0,23-30,5
 David Mayo,236,0,5,0,2,0,22-29,3
 Bobby McCain,393,11,44,1,0,1,22-29,4
@@ -141,7 +130,6 @@ Rakeem Nunez-Roches,132,0,0,0,1,0,22-29,3.5
 Denzel Perryman,586,5,11,0,3,0,23-30,6
 Jordan Phillips,166,1,19,0,2,0,23-30,21.5
 Eric Rowe,381,5,41,0,1,1,23-30,2
-Patrick Scales,10,0,0,0,0,0,28-34,0
 Danny Shelton,278,0,2,0,0,0,22-29,6
 Preston Smith,363,5,23,1,6,2,23-30,58
 Za'Darius Smith,271,0,12,0,2,0,23-30,54.5
@@ -152,7 +140,6 @@ K'Waun Williams,345,5,34,0,3,0,23-31,8
 Leonard Williams,449,1,9,0,4,0,21-28,38
 Nick Williams,125,0,7,0,2,0,24-32,7.5
 Damien Wilson,419,1,9,0,0,0,22-29,9
-James Winchester,10,0,0,1,2,0,26-33,0
 Andrew Adams,252,8,26,0,0,1,24-30,0
 Mackensie Alexander,202,3,32,0,0,0,23-29,4.5
 Robert Alford,340,11,89,1,2,2,25-33,0
@@ -200,7 +187,6 @@ Jonathan Jones,330,11,44,0,2,1,23-29,2.5
 Matt Judon,356,0,14,0,4,0,24-30,62.5
 Jayron Kearse,316,4,25,0,4,0,22-28,3.5
 Miles Killebrew,122,2,6,0,0,1,23-29,0
-Casey Kreiter,7,0,0,0,0,0,26-32,0
 Nick Kwiatkoski,293,2,12,0,0,0,23-29,7
 Shaq Lawson,194,1,14,0,2,1,22-28,25
 Cory Littleton,542,6,32,0,5,1,23-29,9.5
@@ -232,7 +218,6 @@ Brennan Scarlett,158,1,6,0,1,0,23-29,5.5
 Joe Schobert,677,10,30,0,3,1,23-29,11
 Justin Simmons,534,27,56,1,2,1,23-29,3.5
 Ryan Smith,122,1,12,0,2,0,23-29,0
-Carson Tinker,17,0,0,1,0,0,24-33,0
 Jason Verrett,145,7,26,0,1,1,23-30,0
 Nick Vigil,443,3,17,0,5,1,23-29,5
 Jihad Ward,134,0,7,0,3,0,22-28,13
@@ -240,8 +225,6 @@ P.J. Williams,259,8,33,0,2,2,23-29,4
 Daryl Worley,280,5,39,0,1,0,21-27,2
 Jamal Adams,446,4,34,0,4,2,22-27,21.5
 Montravius Adams,85,0,6,0,1,0,22-27,1.5
-Jamal Agnew,26,0,1,5,5,4,22-24,0
-Maurice Alexander,134,2,5,0,1,0,23-28,3
 Jonathan Allen,329,1,4,0,2,0,22-27,33.5
 Alex Anzalone,326,3,16,0,1,0,23-28,6.5
 Chidobe Awuzie,312,6,56,0,1,0,22-27,0
@@ -262,7 +245,6 @@ Michael Davis,287,7,59,0,2,1,22-27,1
 Rasul Douglas,322,14,60,1,0,2,23-28,1
 Samson Ebukam,224,1,8,0,5,2,22-27,23.5
 Kyler Fackrell,162,1,4,0,2,1,25-30,23.5
-Reid Ferguson,8,0,0,0,0,0,23-28,0
 Rudy Ford,132,4,6,0,1,0,23-28,0.5
 Morgan Fox,141,0,2,0,4,0,22-28,18.5
 Myles Garrett,263,0,13,0,4,1,22-27,74.5
@@ -286,7 +268,6 @@ Jaleel Johnson,125,0,0,0,2,0,23-28,6.5
 John Johnson,512,12,41,0,2,0,22-27,1
 D.J. Jones,160,0,9,0,0,0,22-27,9
 Joseph Jones,55,0,0,0,0,0,23-28,0
-Josh Jones,255,2,10,0,1,0,23-28,3
 Sidney Jones,154,4,30,0,0,0,21-26,0
 Karl Joseph,305,5,20,1,5,0,23-28,3
 Damontae Kazee,271,14,19,0,0,0,24-29,0
@@ -309,7 +290,6 @@ Michael Pierce,177,0,2,0,4,0,24-30,6.5
 Reggie Ragland,293,1,4,0,2,1,24-29,3.5
 Haason Reddick,372,0,18,0,5,0,23-28,47
 Jalen Reeves-Maybin,187,0,6,0,3,0,22-27,0.5
-Patrick Ricard,9,0,0,0,0,2,23-24,0
 Duke Riley,230,1,5,0,1,0,23-28,1.5
 Roy Robertson-Harris,157,0,12,0,1,0,24-29,13.5
 Isaac Rochell,103,1,3,0,0,0,22-27,9.5
@@ -355,16 +335,13 @@ Tashawn Bower,23,0,1,0,0,0,22-27,2
 Hunter Bradley,3,0,0,1,0,0,24-28,0
 Taven Bryan,112,0,2,0,0,0,22-26,8.5
 Oren Burks,130,0,1,0,1,0,23-27,1
-Jason Cabinda,37,0,0,0,0,1,22-25,0
 Austin Calitro,102,0,2,0,0,0,24-28,1.5
 Jermaine Carter Jr.,194,0,2,0,2,0,23-27,0.5
 Lorenzo Carter,211,2,17,0,2,2,23-27,18.5
 Sean Chandler,93,0,2,0,2,0,22-26,1
 Bradley Chubb,183,1,5,0,1,0,22-26,28.5
-Rashaad Coward,0,0,0,0,0,0,23-27,0
 Keion Crossen,118,0,10,0,1,0,22-26,1
 Dane Cruikshank,66,1,2,0,0,1,23-27,0
-Korey Cunningham,0,0,0,0,0,0,24-26,0
 Marcus Davenport,142,0,4,0,1,0,22-26,21.5
 Carlton Davis,272,7,64,0,4,0,21-25,0
 Jalen Davis,19,0,1,0,1,0,22-26,1
@@ -446,7 +423,6 @@ KeiVarae Russell,23,1,2,0,0,0,23-28,0
 Tim Settle,73,0,1,0,2,0,21-25,8
 Kevon Seymour,80,0,8,0,1,0,23-29,1
 Nathan Shepherd,104,0,0,0,0,0,25-29,6
-Trent Sieg,4,0,0,0,0,0,23-27,0
 Zach Sieler,192,0,9,0,2,0,23-27,10
 Tanzel Smart,29,0,1,0,0,0,23-28,0
 Andre Smith,33,0,0,0,1,0,21-25,0
@@ -479,7 +455,6 @@ Justin Zimmer,35,0,0,0,0,0,26-30,2
 Johnathan Abram,267,3,14,0,2,0,23-26,0
 Nasir Adderley,232,3,12,0,2,0,22-25,0.5
 Dakota Allen,30,0,0,0,0,0,24-27,0
-Josh Allen,185,1,7,0,3,1,22-25,27.5
 Zach Allen,138,1,15,0,3,1,22-25,11.5
 Azeez Al-Shaair,199,2,7,0,3,0,22-25,2
 Ugo Amadi,131,1,13,1,1,0,22-25,0
@@ -534,7 +509,6 @@ Jake Gervase,8,0,0,0,0,0,24-27,0
 Luke Gifford,40,0,0,0,1,0,24-27,0
 Ulysees Gilbert,29,0,0,0,0,1,22-25,0
 Joe Giles-Harris,26,0,0,0,0,0,22-25,1
-Cullen Gillaspia,4,0,0,0,0,0,27,0
 Kevin Givens,57,0,2,0,1,0,22-25,3
 Carl Granderson,103,0,1,0,1,0,23-26,14.5
 Dre Greenlaw,326,3,10,0,2,2,22-25,2
@@ -607,7 +581,6 @@ Jalen Thompson,307,5,19,0,2,0,21-24,0
 Juan Thornhill,234,8,20,0,1,1,24-27,1
 Jerry Tillery,116,0,2,0,1,0,23-26,10.5
 Drue Tranquill,298,1,6,0,1,0,24-27,6.5
-Zach Triner,1,0,0,0,0,0,31,0
 Shy Tuttle,143,1,14,0,1,0,24-27,4
 Andrew Van Ginkel,181,1,13,0,2,2,24-27,11
 Armani Watts,58,0,2,0,1,0,22-25,2
@@ -713,7 +686,6 @@ Noah Igbinoghene,29,1,5,0,2,0,21-23,0
 Godwin Igwebuike,9,0,0,2,0,1,24-27,0
 Chris Jackson,59,0,5,0,0,0,22-24,0
 Dane Jackson,113,3,23,0,1,0,24-26,0
-Lamar Jackson,31,0,4,0,0,0,22-24,0
 Craig James,17,0,1,0,1,0,22-24,0
 Clay Johnston,36,0,0,0,0,0,24-26,0
 Jaylon Johnson,125,1,31,0,1,0,21-23,0
@@ -817,7 +789,6 @@ Kyron Brown,5,0,0,0,0,0,23-25,0
 Tre Brown,14,0,1,0,0,0,24-25,0
 Camryn Bynum,109,3,9,0,2,0,23-24,1
 Tyson Campbell,143,5,25,0,2,1,21-22,0
-Michael Carter,135,2,14,0,2,0,22-23,1
 Andre Chachere,20,0,0,0,0,0,25-26,0
 Camaron Cheeseman,1,0,0,0,0,0,23-24,0
 Andre Cisco,99,3,12,0,0,1,21-22,1
@@ -825,7 +796,6 @@ Zaven Collins,125,1,9,0,0,1,22-23,2
 Jonathon Cooper,86,0,0,0,1,0,23-24,4.5
 Jabril Cox,8,0,0,0,0,0,23-24,0
 Tyler Coyle,8,0,0,0,0,0,23-24,0
-Scott Daly,0,0,0,1,1,0,28,0
 Jamin Davis,180,0,2,0,2,0,23-24,4
 Marlon Davidson,29,1,2,0,1,1,22-23,1
 Duke Dawson,27,0,2,0,1,0,24-25,0
@@ -857,7 +827,6 @@ Ladarius Hamilton,4,0,0,0,0,0,23-24,0
 Damar Hamlin,93,0,4,0,0,0,23-24,1.5
 Madre Harper,5,0,0,0,1,0,23-24,0
 Jack Heflin,1,0,0,0,0,0,23-24,0
-Parker Hesse,0,0,0,0,0,0,26,0
 Nate Hobbs,146,1,7,0,1,0,22-23,2
 Michael Hoecht,43,0,0,0,0,0,24-25,4.5
 Jevon Holland,165,4,17,3,3,0,21-22,4
@@ -966,7 +935,6 @@ Rashad Weaver,29,0,6,0,1,0,24-25,5.5
 Pete Werner,142,0,3,0,0,0,22-23,0
 Javin White,4,0,0,0,0,0,23-24,0
 Rachad Wildgoose,19,0,3,0,0,0,21-22,0
-Avery Williams,22,0,1,1,2,0,23,0
 Chris Williams,6,0,0,0,0,0,23-24,0
 Jonah Williams,28,0,0,0,0,0,26-27,0.5
 Milton Williams,66,0,4,0,0,0,22-23,6
