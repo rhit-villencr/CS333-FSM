@@ -28,10 +28,10 @@ public class CSVParser {
 	static DatabaseConnectionService dbs = null;
 	
 	//Chase Laptop
-//	static String csvFolder = "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
+    //static String csvFolder = "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
 	
 	//Chase PC
-	static String csvFolder = "A:\\280\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
+	static String csvFolder = "A:\\280\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\"; 
 
 	public static void connect() {
 		String serverName = "";
