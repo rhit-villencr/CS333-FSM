@@ -44,12 +44,12 @@ public class UserService {
 			cs.registerOutParameter(1, Types.INTEGER);
 			cs.setString(2, username);
 			cs.execute();
-			
-		}catch (SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param username

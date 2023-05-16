@@ -11,10 +11,10 @@ import javax.swing.JOptionPane;
 
 public class SQLDatabaseResult {
 	
-	public static String[] getPlayer(DatabaseConnectionService connection, String fName, String lName) {
+	public static String[] getPlayer(DatabaseConnectionService dbService, String fName, String lName) {
 		try {
 			///// Creating a callable statement that calls a SPROC from the database
-			CallableStatement cs = connection.getConnection().prepareCall("{? = call viewSelectPlayer(?, ?)}");
+			CallableStatement cs = dbService.getConnection().prepareCall("{? = call viewSelectPlayer(?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 			cs.setString(2, fName);
 			cs.setString(3, lName);
@@ -57,10 +57,10 @@ public class SQLDatabaseResult {
 		}
 	}
 	
-	public static String[] getTeams(DatabaseConnectionService connection) {
+	public static String[] getTeams(DatabaseConnectionService dbService) {
 		try {
 			///// Creating a callable statement that calls a SPROC from the database
-			CallableStatement cs = connection.getConnection().prepareCall("{? = call getTeams()}");
+			CallableStatement cs = dbService.getConnection().prepareCall("{? = call getTeams()}");
 			cs.registerOutParameter(1, Types.INTEGER);
 			ArrayList<String> TeamNames = new ArrayList<String>();
 			boolean results = cs.execute();
@@ -93,18 +93,18 @@ public class SQLDatabaseResult {
 	}
 	/**
 	 * 
-	 * @param connection
+	 * @param dbService
 	 * @param userName
 	 * @param favTeam
 	 * @param favPlayerFName
 	 * @param favPlayerLName
 	 */
 	/* Update User Profile */
-	public static void updateUser(DatabaseConnectionService connection, String userName, String favTeam,
+	public static void updateUser(DatabaseConnectionService dbService, String userName, String favTeam,
 			String favPlayerFName, String favPlayerLName) {
 		try {
 			///// Create a callable statement to updateUser
-			CallableStatement cs = connection.getConnection().prepareCall("{? = call updateUser(?, ?, ?, ?)}");
+			CallableStatement cs = dbService.getConnection().prepareCall("{? = call updateUser(?, ?, ?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 
 			cs.setString(2, userName);
@@ -134,15 +134,15 @@ public class SQLDatabaseResult {
 
 	/**
 	 * 
-	 * @param connection
+	 * @param dbService
 	 * @param table
 	 * @return Object[][]
 	 */
 	/* Returns a 2d array of the contents of a given table in a given database */
-	public static Object[][] getResult(DatabaseConnectionService connection, String team, String type, String pos) {
+	public static Object[][] getResult(DatabaseConnectionService dbService, String team, String type, String pos) {
 		try {
 			///// Create a callable statement that calls the SPROC viewAll and set vars
-			CallableStatement cs = connection.getConnection().prepareCall("{? = call viewTeam" + type + "(?, ?)}");
+			CallableStatement cs = dbService.getConnection().prepareCall("{? = call viewTeam" + type + "(?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 			cs.setString(2, team);
 			cs.setString(3, pos);
@@ -157,7 +157,7 @@ public class SQLDatabaseResult {
 				while (rs.next()) {
 					ArrayList<String> temp = new ArrayList<String>();
 					
-					for (int i = 0; i < getHeaders(connection, type).length; i++) {
+					for (int i = 0; i < getHeaders(dbService, type).length; i++) {
 						temp.add(rs.getString(i + 1));
 					}
 					data.add(temp);
@@ -192,12 +192,12 @@ public class SQLDatabaseResult {
 
 	/**
 	 * 
-	 * @param dcs
+	 * @param dbService
 	 * @param tableName
 	 * @return String[]
 	 */
 	/* Returns a 1d array of the headers of a given table in a given database */
-	public static String[] getHeaders(DatabaseConnectionService dcs, String type) {
+	public static String[] getHeaders(DatabaseConnectionService dbService, String type) {
 		String[] headers = null;
 		
 		if(type.equals("Players")) {

@@ -57,25 +57,25 @@ public class Frame {
 
 	/**
 	 * 
-	 * @param con
+	 * @param dbService
 	 */
 	/* Starts the code */
-	public void launchLogin(DatabaseConnectionService con) {
-		loginFrame(con);
+	public void launchLogin(DatabaseConnectionService dbService) {
+		loginFrame(dbService);
 	}
 
 	/**
 	 * 
-	 * @param con
+	 * @param dbService
 	 */
 	/* will start the table view frame */
-	public void launchView(DatabaseConnectionService con) {
+	public void launchView(DatabaseConnectionService dbService) {
 
 		///// Checks if any nonempty tables exist
-		String[] NET = SQLDatabaseResult.getTeams(con);
+		String[] NET = SQLDatabaseResult.getTeams(dbService);
 		if (NET.length != 0) {
 			tableName = NET[0];
-			viewTable(tableName, con);
+			viewTable(tableName, dbService);
 		} else {
 			System.exit(1);
 		}
@@ -95,13 +95,11 @@ public class Frame {
 		return string;
 	}
 
-	public void searchFrame(DatabaseConnectionService con) {
+	public void searchFrame(DatabaseConnectionService dbService) {
 		///// Removing possible old values
 		frame.dispose();
 		frame = new JFrame();
 		/////
-
-		DatabaseConnectionService dcs = con;
 
 		JLabel fname = new JLabel("First Name:");
 		JTextField PFname = new JTextField(8);
@@ -113,10 +111,10 @@ public class Frame {
 			public void actionPerformed(ActionEvent e) {
 
 //				System.out.println("FirstName: " + PFname.getText() + "\nLastName: " + PLname.getText());
-				playerSearch = SQLDatabaseResult.getPlayer(con, PFname.getText(), PLname.getText());
+				playerSearch = SQLDatabaseResult.getPlayer(dbService, PFname.getText(), PLname.getText());
 				PFname.setText("");
 				PLname.setText("");
-				searchFrame(con);
+				searchFrame(dbService);
 			}
 		});
 
@@ -124,7 +122,7 @@ public class Frame {
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				playerSearch = null;
-				launchView(con);
+				launchView(dbService);
 			}
 		});
 
@@ -205,19 +203,19 @@ public class Frame {
 
 		frame.add(top, BorderLayout.NORTH);
 
-		formatFrame(con);
+		formatFrame(dbService);
 	}
 
 	/**
 	 * 
-	 * @param con
+	 * @param dbService
 	 */
 	/* starts the login JFrame */
-	public void profileFrame(DatabaseConnectionService con) {
+	public void profileFrame(DatabaseConnectionService dbService) {
 		///// Removing possible old values
 		frame.dispose();
 		frame = new JFrame();
-		UserService serv = new UserService(con);
+		UserService serv = new UserService(dbService);
 		/////
 
 		///// Create objects
@@ -256,26 +254,26 @@ public class Frame {
 					fname = null;
 				if (lname.equals(""))
 					lname = null;
-				SQLDatabaseResult.updateUser(con, userName, team, fname, lname);
+				SQLDatabaseResult.updateUser(dbService, userName, team, fname, lname);
 			}
 		});
 
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				launchView(con);
+				launchView(dbService);
 			}
 		});
 		
 		deleteProfile.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					serv.removeAccount(userName);
-					launchLogin(con);
+					launchLogin(dbService);
 				}
 			});
 			
 		logout.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					launchLogin(con);
+					launchLogin(dbService);
 				}
 			});
 		/////
@@ -306,22 +304,18 @@ public class Frame {
 		frame.add(input);
 		/////
 
-		formatFrame(con);
+		formatFrame(dbService);
 	}
 
 	/**
-	 * @param con
+	 * @param dbService
 	 */
-	public void loginFrame(DatabaseConnectionService con) {
-		UserService serv = new UserService(con);
+	public void loginFrame(DatabaseConnectionService dbService) {
+		UserService serv = new UserService(dbService);
 
 		///// Removing possible old values
 		frame.dispose();
 		frame = new JFrame();
-		/////
-
-		///// Initializing out connection to the given one
-		DatabaseConnectionService dcs = con;
 		/////
 
 		///// Initializing componenets and setting the echochar to "*"
@@ -343,7 +337,7 @@ public class Frame {
 				if (serv.login(user.getText(), charToString(pass.getPassword()))) {
 					System.out.println("Login Successful");
 					userName = user.getText();
-					launchView(con);
+					launchView(dbService);
 				}
 				user.setText("");
 				pass.setText("");
@@ -355,7 +349,7 @@ public class Frame {
 				if (serv.register(user.getText(), charToString(pass.getPassword()))) {
 					System.out.println("Register Successful");
 					userName = user.getText();
-					launchView(con);
+					launchView(dbService);
 				}
 				user.setText("");
 				pass.setText("");
@@ -389,17 +383,17 @@ public class Frame {
 		frame.add(buttons, BorderLayout.SOUTH);
 		/////
 
-		formatFrame(dcs);
+		formatFrame(dbService);
 
 	}
 
 	/**
 	 * 
 	 * @param tableName
-	 * @param con
+	 * @param dbService
 	 */
 	/* Will refresh the JFrame with whatever table in inserted */
-	public void viewTable(String tableName, DatabaseConnectionService con) {
+	public void viewTable(String tableName, DatabaseConnectionService dbService) {
 
 		///// Removing possible old values
 		frame.dispose();
@@ -407,11 +401,11 @@ public class Frame {
 		/////
 
 		///// Initializing out connection to the given one
-		DatabaseConnectionService dcs = con;
+		DatabaseConnectionService dcs = dbService;
 		/////
 
 		///// To create the dropdown menu
-		String[] choices = SQLDatabaseResult.getTeams(con);
+		String[] choices = SQLDatabaseResult.getTeams(dbService);
 		JComboBox<String> cb = new JComboBox<String>(choices);
 		cb.setSelectedItem((Object) tableName);
 
@@ -465,7 +459,7 @@ public class Frame {
 		userButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Swapped to profile frame");
-				profileFrame(con);
+				profileFrame(dbService);
 			}
 		});
 		/////
@@ -475,7 +469,7 @@ public class Frame {
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Swapped to search frame");
-				searchFrame(con);
+				searchFrame(dbService);
 			}
 		});
 		/////
@@ -575,16 +569,16 @@ public class Frame {
 	}
 
 	/**
-	 * @param con
+	 * @param dbService
 	 */
-	public void formatFrame(DatabaseConnectionService con) {
+	public void formatFrame(DatabaseConnectionService dbService) {
 		///// Adding a bunch of JFrame setting to make it look better
 		frame.setTitle("User: " + userName);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {
-				con.closeConnection();
+				dbService.closeConnection();
 				frame.dispose();
 				System.exit(0);
 			}
