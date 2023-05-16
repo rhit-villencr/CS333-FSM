@@ -86,6 +86,11 @@ public class CSVParser {
 		insertTeam();
 
 		insertPlayer();
+		
+		insertOffensivePlayer();
+		insertDefensivePlayer();
+		insertSpecialTeamsPlayer();
+		
 		insertStaff();
 
 		long endTime = System.nanoTime();
@@ -93,6 +98,18 @@ public class CSVParser {
 		System.out.println(totalTime / 1000000000 + " seconds to populate databse.");
 	}
 
+	public static void insertOffensivePlayer() {
+	
+	}
+	
+	public static void insertDefensivePlayer() {
+		
+	}
+	
+	public static void insertSpecialTeamsPlayer() {
+		
+	}
+	
 	public static void insertStaff() {
 		String staff = csvFolder + "Staff.csv";
 		String line = "";
