@@ -235,7 +235,7 @@ public class CSVParser {
 		try (BufferedReader br = new BufferedReader(new FileReader(defPlayers))) {
 			while ((line = br.readLine()) != null) {
 				if (ready) {
-//					cs = con.prepareCall("{? = call createOffensivePlayer(?, ?, ?, ?)}");
+//					cs = con.prepareCall("{? = call createDefensivePlayer(?, ?, ?, ?)}");
 //					cs.registerOutParameter(1, Types.INTEGER);
 				}
 				if (isHeader) {
@@ -339,7 +339,7 @@ public class CSVParser {
 		try (BufferedReader br = new BufferedReader(new FileReader(specPlayers))) {
 			while ((line = br.readLine()) != null) {
 				if (ready) {
-//					cs = con.prepareCall("{? = call createOffensivePlayer(?, ?, ?, ?)}");
+//					cs = con.prepareCall("{? = call createSpecialTeamsPlayer(?, ?, ?, ?)}");
 //					cs.registerOutParameter(1, Types.INTEGER);
 				}
 				if (isHeader) {
