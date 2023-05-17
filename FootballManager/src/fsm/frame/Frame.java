@@ -37,7 +37,12 @@ public class Frame {
 	String[] playerSearch = null;
 	JTable table = null;
 	DefaultTableModel tableModel = null;
+	DatabaseConnectionService dbService = null;
 	/////
+
+	public Frame(DatabaseConnectionService dbService) {
+		this.dbService = dbService;
+	}
 
 	/**
 	 * 
@@ -60,8 +65,8 @@ public class Frame {
 	 * @param dbService
 	 */
 	/* Starts the code */
-	public void launchLogin(DatabaseConnectionService dbService) {
-		loginFrame(dbService);
+	public void launchLogin() {
+		loginFrame();
 	}
 
 	/**
@@ -69,13 +74,13 @@ public class Frame {
 	 * @param dbService
 	 */
 	/* will start the table view frame */
-	public void launchView(DatabaseConnectionService dbService) {
+	public void launchView() {
 
 		///// Checks if any nonempty tables exist
 		String[] NET = SQLDatabaseResult.getTeams(dbService);
 		if (NET.length != 0) {
 			tableName = NET[0];
-			viewTable(tableName, dbService);
+			viewTable(tableName);
 		} else {
 			System.exit(1);
 		}
@@ -95,18 +100,18 @@ public class Frame {
 		return string;
 	}
 
-	public void searchFrame(DatabaseConnectionService dbService) {
+	public void searchFrame() {
 		///// Removing possible old values
 		frame.dispose();
 		frame = new JFrame();
 		/////
 
 		JLabel fname = new JLabel("First Name:");
-		JTextField PFname = new JTextField(8);
+		JTextField PFname = new JTextField(12);
 		JLabel lname = new JLabel("Last Name:");
-		JTextField PLname = new JTextField(8);
+		JTextField PLname = new JTextField(12);
 
-		JButton search = new JButton("Search");
+		JButton search = new JButton("Search Players");
 		search.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -114,15 +119,15 @@ public class Frame {
 				playerSearch = SQLDatabaseResult.getPlayer(dbService, PFname.getText(), PLname.getText());
 				PFname.setText("");
 				PLname.setText("");
-				searchFrame(dbService);
+				searchFrame();
 			}
 		});
 
-		JButton back = new JButton("Back");
+		JButton back = new JButton("Back To Tables");
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				playerSearch = null;
-				launchView(dbService);
+				launchView();
 			}
 		});
 
@@ -181,14 +186,31 @@ public class Frame {
 			}
 		}
 
-		JPanel top = new JPanel();
+		Box fields = Box.createVerticalBox();
+		Box buttons = Box.createVerticalBox();
+
 		frame.setLayout(new BorderLayout());
-		top.add(back);
-		top.add(fname);
-		top.add(PFname);
-		top.add(lname);
-		top.add(PLname);
-		top.add(search);
+
+		///// Button for user profile
+		JButton userButton = new JButton("Edit Profile");
+		userButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Swapped to profile frame");
+				profileFrame();
+			}
+		});
+		/////
+
+		fields.add(fname);
+		fields.add(PFname);
+		fields.add(lname);
+		fields.add(PLname);
+		buttons.add(back);
+		buttons.add(search);
+		buttons.add(userButton);
+
+		Box tablePNL = Box.createVerticalBox();
+		JPanel topPNL = new JPanel();
 
 		if (playerSearch != null) {
 			table.getTableHeader().setReorderingAllowed(false);
@@ -196,14 +218,17 @@ public class Frame {
 			/////
 
 			///// Adding the table and the panel to the JFrame
-			frame.add(table.getTableHeader(), BorderLayout.CENTER);
+			tablePNL.add(table.getTableHeader(), BorderLayout.NORTH);
 //			System.out.println(table.getTableHeader());
-			frame.add(table, BorderLayout.SOUTH);
+			tablePNL.add(table, BorderLayout.CENTER);
 		}
 
-		frame.add(top, BorderLayout.NORTH);
+		topPNL.add(fields);
+		topPNL.add(buttons);
+		frame.add(topPNL, BorderLayout.NORTH);
+		frame.add(tablePNL, BorderLayout.SOUTH);
 
-		formatFrame(dbService);
+		formatFrame();
 	}
 
 	/**
@@ -211,7 +236,7 @@ public class Frame {
 	 * @param dbService
 	 */
 	/* starts the login JFrame */
-	public void profileFrame(DatabaseConnectionService dbService) {
+	public void profileFrame() {
 		///// Removing possible old values
 		frame.dispose();
 		frame = new JFrame();
@@ -224,7 +249,6 @@ public class Frame {
 		JButton deleteProfile = new JButton("Delete Profile");
 		JButton logout = new JButton("Logout");
 
-
 		JLabel teamName = new JLabel("Enter Favorite Team");
 		JTextField favTeam = new JTextField(8);
 
@@ -234,11 +258,9 @@ public class Frame {
 		JLabel playerLName = new JLabel("Enter Favorite Player LName");
 		JTextField favPlayerL = new JTextField(8);
 
-		Box teamBox = Box.createVerticalBox();
-		Box playerBoxF = Box.createVerticalBox();
-		Box playerBoxL = Box.createVerticalBox();
+		Box inputBox = Box.createVerticalBox();
 
-		Box submitPanel = Box.createVerticalBox();
+		Box buttonPanel = Box.createVerticalBox();
 		JPanel input = new JPanel();
 		/////
 
@@ -260,57 +282,54 @@ public class Frame {
 
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				launchView(dbService);
+				launchView();
 			}
 		});
-		
+
 		deleteProfile.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					serv.removeAccount(userName);
-					launchLogin(dbService);
-				}
-			});
-			
+			public void actionPerformed(ActionEvent e) {
+				serv.removeAccount(userName);
+				launchLogin();
+			}
+		});
+
 		logout.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					launchLogin(dbService);
-				}
-			});
+			public void actionPerformed(ActionEvent e) {
+				launchLogin();
+			}
+		});
 		/////
-		
 
 		///// Add to panels
-		teamBox.add(teamName);
-		teamBox.add(favTeam);
+		inputBox.add(teamName);
+		inputBox.add(favTeam);
 
-		playerBoxF.add(playerFName);
-		playerBoxF.add(favPlayerF);
+		inputBox.add(playerFName);
+		inputBox.add(favPlayerF);
 
-		playerBoxL.add(playerLName);
-		playerBoxL.add(favPlayerL);
+		inputBox.add(playerLName);
+		inputBox.add(favPlayerL);
 
-		submitPanel.add(submit);
-		submitPanel.add(back);
-		submitPanel.add(deleteProfile);
-		submitPanel.add(logout);
+		buttonPanel.add(submit);
+		buttonPanel.add(logout);
+		buttonPanel.add(deleteProfile);
+		buttonPanel.add(back);
 
-		input.add(teamBox);
-		input.add(playerBoxF);
-		input.add(playerBoxL);
-		input.add(submitPanel);
+		input.add(inputBox);
+		input.add(buttonPanel);
 		/////
 
 		///// Add panels to frame
 		frame.add(input);
 		/////
 
-		formatFrame(dbService);
+		formatFrame();
 	}
 
 	/**
 	 * @param dbService
 	 */
-	public void loginFrame(DatabaseConnectionService dbService) {
+	public void loginFrame() {
 		UserService serv = new UserService(dbService);
 
 		///// Removing possible old values
@@ -337,7 +356,7 @@ public class Frame {
 				if (serv.login(user.getText(), charToString(pass.getPassword()))) {
 					System.out.println("Login Successful");
 					userName = user.getText();
-					launchView(dbService);
+					launchView();
 				}
 				user.setText("");
 				pass.setText("");
@@ -349,7 +368,7 @@ public class Frame {
 				if (serv.register(user.getText(), charToString(pass.getPassword()))) {
 					System.out.println("Register Successful");
 					userName = user.getText();
-					launchView(dbService);
+					launchView();
 				}
 				user.setText("");
 				pass.setText("");
@@ -383,7 +402,7 @@ public class Frame {
 		frame.add(buttons, BorderLayout.SOUTH);
 		/////
 
-		formatFrame(dbService);
+		formatFrame();
 
 	}
 
@@ -393,15 +412,11 @@ public class Frame {
 	 * @param dbService
 	 */
 	/* Will refresh the JFrame with whatever table in inserted */
-	public void viewTable(String tableName, DatabaseConnectionService dbService) {
+	public void viewTable(String tableName) {
 
 		///// Removing possible old values
 		frame.dispose();
 		frame = new JFrame();
-		/////
-
-		///// Initializing out connection to the given one
-		DatabaseConnectionService dcs = dbService;
 		/////
 
 		///// To create the dropdown menu
@@ -413,7 +428,7 @@ public class Frame {
 			public void actionPerformed(ActionEvent e) {
 				if (!cb.getSelectedItem().equals(tableName)) {
 					System.out.println("Changed view to " + cb.getSelectedItem() + " table.");
-					viewTable((String) cb.getSelectedItem(), dcs);
+					viewTable((String) cb.getSelectedItem());
 				}
 			}
 		});
@@ -434,7 +449,7 @@ public class Frame {
 		posCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				position = (String) posCB.getSelectedItem();
-				viewTable((String) cb.getSelectedItem(), dcs);
+				viewTable((String) cb.getSelectedItem());
 			}
 		});
 
@@ -450,7 +465,7 @@ public class Frame {
 				} else if (curView.equals("Staff")) {
 					position = "HC";
 				}
-				viewTable((String) cb.getSelectedItem(), dcs);
+				viewTable((String) cb.getSelectedItem());
 			}
 		});
 
@@ -459,7 +474,7 @@ public class Frame {
 		userButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Swapped to profile frame");
-				profileFrame(dbService);
+				profileFrame();
 			}
 		});
 		/////
@@ -469,7 +484,7 @@ public class Frame {
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Swapped to search frame");
-				searchFrame(dbService);
+				searchFrame();
 			}
 		});
 		/////
@@ -480,7 +495,7 @@ public class Frame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Refreshed " + tableName + " table.");
-				viewTable(tableName, dcs);
+				viewTable(tableName);
 			}
 		});
 		/////
@@ -496,7 +511,7 @@ public class Frame {
 		/////
 
 		///// Getting the headers and adding them to the table
-		String[] headers = SQLDatabaseResult.getHeaders(dcs, curView);
+		String[] headers = SQLDatabaseResult.getHeaders(dbService, curView);
 //		System.out.println(curView);
 		for (int i = 0; i < headers.length; i++) {
 			tableModel.addColumn(headers[i]);
@@ -505,7 +520,7 @@ public class Frame {
 
 		///// Inputting collected data into the table
 //		System.out.println("TableName:" + tableName + "\nCurView: " + curView + "\nPosition: " + position);
-		Object[][] result = SQLDatabaseResult.getResult(dcs, tableName, curView, position);
+		Object[][] result = SQLDatabaseResult.getResult(dbService, tableName, curView, position);
 //		printTable((String[][])result);
 		Vector<Object> newRow;
 		for (int i = 0; i < result.length; i++) {
@@ -523,12 +538,12 @@ public class Frame {
 		for (var = 0; var < table.getColumnCount(); var++) {
 			l_Col = table.getColumn(table.getColumnName(var));
 			width = columnHeaderWidth(table, l_Col) + 6;
-			if(curView.equals("Players")) {
+			if (curView.equals("Players")) {
 				l_Col.setMinWidth(175);
-			}else {
+			} else {
 				l_Col.setMinWidth(225);
 			}
-			
+
 			l_Col.setMaxWidth(width);
 		}
 		/////
@@ -559,19 +574,22 @@ public class Frame {
 		/////
 
 		///// Adding the table and the panel to the JFrame
-		frame.add(table.getTableHeader(), BorderLayout.CENTER);
-		frame.add(table, BorderLayout.SOUTH);
+		Box tableBox = Box.createVerticalBox();
+		tableBox.add(table.getTableHeader(), BorderLayout.NORTH);
+		tableBox.add(table, BorderLayout.CENTER);
+
+		frame.add(tableBox, BorderLayout.CENTER);
 		frame.add(topPnl, BorderLayout.NORTH);
 		/////
 
-		formatFrame(dcs);
+		formatFrame();
 
 	}
 
 	/**
 	 * @param dbService
 	 */
-	public void formatFrame(DatabaseConnectionService dbService) {
+	public void formatFrame() {
 		///// Adding a bunch of JFrame setting to make it look better
 		frame.setTitle("User: " + userName);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

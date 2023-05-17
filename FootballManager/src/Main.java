@@ -58,8 +58,8 @@ public class Main {
 		/////
 
 		///// Create new frame and run the startup function
-		Frame frame = new Frame();
-		frame.launchLogin(connection);
+		Frame frame = new Frame(connection);
+		frame.launchLogin();
 		/////
 	}
 }
