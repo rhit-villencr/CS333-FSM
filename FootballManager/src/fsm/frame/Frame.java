@@ -288,8 +288,54 @@ public class Frame {
 
 		deleteProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				serv.removeAccount(userName);
-				launchLogin();
+				JFrame confirmation = new JFrame("Confirmation");
+				JLabel confirmText = new JLabel("Are you sure?");
+				JButton yes = new JButton("Yes");
+				JButton no = new JButton("No");
+				
+				yes.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						serv.removeAccount(userName);
+						launchLogin();
+					}
+				});
+				
+				no.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						confirmation.dispose();
+					}
+				});
+				
+				JPanel buttonPanel = new JPanel();
+				JPanel aPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+				Box all = Box.createVerticalBox();
+				
+				buttonPanel.add(yes);
+				buttonPanel.add(no);
+				
+				aPanel.add(confirmText);
+				
+				all.add(aPanel);
+				all.add(buttonPanel);
+				
+				confirmation.add(all);
+				
+				///// Adding a bunch of JFrame setting to make it look better
+				confirmation.setTitle("User: " + userName);
+				confirmation.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+				confirmation.addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosing(WindowEvent event) {
+						confirmation.dispose();
+					}
+				});
+				confirmation.pack();
+				confirmation.setLocationRelativeTo(null);
+				confirmation.setVisible(true);
+				confirmation.setAlwaysOnTop(true);
+				confirmation.setAlwaysOnTop(false);
+				/////
+				
 			}
 		});
 
@@ -311,9 +357,9 @@ public class Frame {
 		inputBox.add(favPlayerL);
 
 		buttonPanel.add(submit);
+		buttonPanel.add(back);
 		buttonPanel.add(logout);
 		buttonPanel.add(deleteProfile);
-		buttonPanel.add(back);
 
 		input.add(inputBox);
 		input.add(buttonPanel);
