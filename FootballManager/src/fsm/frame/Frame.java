@@ -1,6 +1,7 @@
 package fsm.frame;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -432,7 +433,7 @@ public class Frame {
 			}
 		});
 		/////
-
+		
 		///// Adding components to the JPanels
 		buttons.add(login);
 		buttons.add(register);
@@ -442,12 +443,12 @@ public class Frame {
 		textField.add(pass);
 		textField.add(showPass);
 		/////
-
+		
 		///// Adding JPanels to the JFrame
 		frame.add(textField, BorderLayout.NORTH);
 		frame.add(buttons, BorderLayout.SOUTH);
 		/////
-
+		
 		formatFrame();
 
 	}
