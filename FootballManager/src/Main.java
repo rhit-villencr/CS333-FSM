@@ -43,12 +43,12 @@ public class Main {
 		/////
 
 		///// Initialize DatabaseConnectionService class
-		DatabaseConnectionService connection = new DatabaseConnectionService(serverName, databaseName);
+		DatabaseConnectionService dbService = new DatabaseConnectionService(serverName, databaseName);
 		/////
 
 		///// Attempt to connect, if failed, abort
 		try {
-			connection.connect(username, password);
+			dbService.connect(username, password);
 			System.out.println("Successfully Connected To: " + databaseName);
 
 		} catch (Exception e) {
@@ -58,7 +58,7 @@ public class Main {
 		/////
 
 		///// Create new frame and run the startup function
-		Frame frame = new Frame(connection);
+		Frame frame = new Frame(dbService);
 		frame.launchLogin();
 		/////
 	}
