@@ -28,11 +28,10 @@ public class CSVParser {
 	static DatabaseConnectionService dbService = null;
 
 	// Chase RHIT Laptop
-	// static String csvFolder =
-	// "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSVFiles\\";
+	 static String csvFolder = "C:\\Users\\villencr\\Documents\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
 
 	// Chase PC
-	static String csvFolder = "A:\\280\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
+//	static String csvFolder = "A:\\280\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
 
 	public static void connect() {
 		String serverName = "";
@@ -559,7 +558,7 @@ public class CSVParser {
 								if (ready)
 									cs.setString(4, col);
 							}
-							if (headers.get(curHeader).equals("Salary")) {
+							if (headers.get(curHeader).equals("Total Contract Value")) {
 								if (ready)
 									cs.setString(5, col);
 							}
