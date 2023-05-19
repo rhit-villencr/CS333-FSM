@@ -317,4 +317,47 @@ public class SQLDatabaseResult {
 
 	}
 
+	public static String[] getFavUser(DatabaseConnectionService dbService, String userName) {
+		try {
+			CallableStatement cs = dbService.getConnection().prepareCall("{? = call getUserFav(?)}");
+			cs.registerOutParameter(1, Types.INTEGER);
+			cs.setString(2, userName);
+			ArrayList<String> favorites = new ArrayList<String>();
+			boolean results = cs.execute();
+			// Loop through the available result sets.
+			while (results) {
+				ResultSet rs = cs.getResultSet();
+				// Retrieve data from the result set.
+				while (rs.next()) {
+					int i = 1;
+					while (true) {
+						try {
+							favorites.add(rs.getString(i));
+						} catch (SQLException e) {
+							break;
+						}
+						i++;
+					};
+				}
+				rs.close();
+				// Check for next result set
+				results = cs.getMoreResults();
+			}
+			cs.close();
+			///// Convert said array list into a 1d string array
+			String[] returnData = new String[favorites.size()];
+			for (int i = 0; i < favorites.size(); i++) {
+				returnData[i] = favorites.get(i);
+			}
+			/////
+			return returnData;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+
+
 }

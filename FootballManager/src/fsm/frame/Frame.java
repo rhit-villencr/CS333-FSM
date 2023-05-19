@@ -255,13 +255,14 @@ public class Frame {
 		JButton logout = new JButton("Logout");
 
 		JLabel teamName = new JLabel("Enter Favorite Team");
-		JTextField favTeam = new JTextField(8);
+		String[] favorites = SQLDatabaseResult.getFavUser(dbService, userName);
+		JTextField favTeam = new JTextField(favorites[2], 8);
 
 		JLabel playerFName = new JLabel("Enter Favorite Player FName");
-		JTextField favPlayerF = new JTextField(8);
+		JTextField favPlayerF = new JTextField(favorites[0], 8);
 
 		JLabel playerLName = new JLabel("Enter Favorite Player LName");
-		JTextField favPlayerL = new JTextField(8);
+		JTextField favPlayerL = new JTextField(favorites[1], 8);
 
 		Box inputBox = Box.createVerticalBox();
 
@@ -551,9 +552,10 @@ public class Frame {
 		login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (serv.login(user.getText(), charToString(pass.getPassword()))) {
-					System.out.println("Login Successful");
-					userName = user.getText();
-					launchView();
+						System.out.println("Login Successful");
+						userName = user.getText();
+						launchView();
+					
 				}
 				user.setText("");
 				pass.setText("");
@@ -562,10 +564,13 @@ public class Frame {
 
 		register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (serv.register(user.getText(), charToString(pass.getPassword()))) {
-					System.out.println("Register Successful");
-					userName = user.getText();
-					launchView();
+				if(charToString(pass.getPassword()).length() < 5) {
+					JOptionPane.showMessageDialog(null, "Password Must Be 5 Characters Long");
+				}
+				else if (serv.register(user.getText(), charToString(pass.getPassword()))) {
+						System.out.println("Register Successful");
+						userName = user.getText();
+						launchView();
 				}
 				user.setText("");
 				pass.setText("");
