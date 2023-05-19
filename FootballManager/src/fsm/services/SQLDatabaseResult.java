@@ -362,22 +362,13 @@ public class SQLDatabaseResult {
 
 	public static String getFavUserTeam(DatabaseConnectionService dbService, String userName) {
 		try {
-			CallableStatement cs = dbService.getConnection().prepareCall("{? = call getUserFavTeam(?)}");
+			CallableStatement cs = dbService.getConnection().prepareCall("{? = call getUserFavTeam(?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 			cs.setString(2, userName);
+			cs.registerOutParameter(3, Types.NVARCHAR);
 			cs.execute();
-			boolean results = cs.execute();
-			// Loop through the available result sets.
-			while (results) {
-				ResultSet rs = cs.getResultSet();
-				// Retrieve data from the result set.
-				while (rs.next()) {
-					return rs.getString(1);
-					
-				}
-				rs.close();
-			}
-			return null;
+			return cs.getNString(3);
+			
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

@@ -261,13 +261,18 @@ public class Frame {
 		
 		String[] favorites = SQLDatabaseResult.getFavUserPerson(dbService, userName);
 		String team = SQLDatabaseResult.getFavUserTeam(dbService, userName);
-		
+		System.out.println("Length: " + favorites.length);
 		if(favorites.length != 0) {
 			favPlayerF = new JTextField(favorites[0], 8);
 			favPlayerL = new JTextField(favorites[1], 8);
+		}else {
+			favPlayerF = new JTextField(8);
+			favPlayerL = new JTextField(8);
 		}
 		if(team != null) {
 			favTeam = new JTextField(team, 8);
+		}else {
+			favTeam = new JTextField(8);
 		}
 		
 		
