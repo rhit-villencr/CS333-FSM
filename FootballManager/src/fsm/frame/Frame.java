@@ -39,6 +39,9 @@ public class Frame {
 	JTable table = null;
 	DefaultTableModel tableModel = null;
 	DatabaseConnectionService dbService = null;
+	JTextField favPlayerF = new JTextField(8);
+	JTextField favPlayerL = new JTextField(8);
+	JTextField favTeam = new JTextField(8);
 	/////
 
 	public Frame(DatabaseConnectionService dbService) {
@@ -255,14 +258,25 @@ public class Frame {
 		JButton logout = new JButton("Logout");
 
 		JLabel teamName = new JLabel("Enter Favorite Team");
-		String[] favorites = SQLDatabaseResult.getFavUser(dbService, userName);
-		JTextField favTeam = new JTextField(favorites[2], 8);
+		
+		String[] favorites = SQLDatabaseResult.getFavUserPerson(dbService, userName);
+		String team = SQLDatabaseResult.getFavUserTeam(dbService, userName);
+		
+		if(favorites.length != 0) {
+			favPlayerF = new JTextField(favorites[0], 8);
+			favPlayerL = new JTextField(favorites[1], 8);
+		}
+		if(team != null) {
+			favTeam = new JTextField(team, 8);
+		}
+		
+		
 
 		JLabel playerFName = new JLabel("Enter Favorite Player FName");
-		JTextField favPlayerF = new JTextField(favorites[0], 8);
+		
 
 		JLabel playerLName = new JLabel("Enter Favorite Player LName");
-		JTextField favPlayerL = new JTextField(favorites[1], 8);
+		
 
 		Box inputBox = Box.createVerticalBox();
 

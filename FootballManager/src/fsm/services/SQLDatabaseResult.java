@@ -317,9 +317,9 @@ public class SQLDatabaseResult {
 
 	}
 
-	public static String[] getFavUser(DatabaseConnectionService dbService, String userName) {
+	public static String[] getFavUserPerson(DatabaseConnectionService dbService, String userName) {
 		try {
-			CallableStatement cs = dbService.getConnection().prepareCall("{? = call getUserFav(?)}");
+			CallableStatement cs = dbService.getConnection().prepareCall("{? = call getUserFavPerson(?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 			cs.setString(2, userName);
 			ArrayList<String> favorites = new ArrayList<String>();
@@ -333,6 +333,7 @@ public class SQLDatabaseResult {
 					while (true) {
 						try {
 							favorites.add(rs.getString(i));
+						System.out.println(rs.getString(i));
 						} catch (SQLException e) {
 							break;
 						}
@@ -357,6 +358,31 @@ public class SQLDatabaseResult {
 			return null;
 		}
 		
+	}
+
+	public static String getFavUserTeam(DatabaseConnectionService dbService, String userName) {
+		try {
+			CallableStatement cs = dbService.getConnection().prepareCall("{? = call getUserFavTeam(?)}");
+			cs.registerOutParameter(1, Types.INTEGER);
+			cs.setString(2, userName);
+			cs.execute();
+			boolean results = cs.execute();
+			// Loop through the available result sets.
+			while (results) {
+				ResultSet rs = cs.getResultSet();
+				// Retrieve data from the result set.
+				while (rs.next()) {
+					return rs.getString(1);
+					
+				}
+				rs.close();
+			}
+			return null;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 
