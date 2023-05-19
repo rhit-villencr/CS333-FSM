@@ -124,7 +124,7 @@ public class Frame {
 			}
 		});
 
-		JButton back = new JButton("Back To Tables");
+		JButton back = new JButton("Back To Teams");
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				playerSearch = null;
@@ -246,7 +246,7 @@ public class Frame {
 
 		///// Create objects
 		JButton submit = new JButton("Update Profile");
-		JButton back = new JButton("Back To Tables");
+		JButton back = new JButton("Back To Teams");
 		JButton deleteProfile = new JButton("Delete Profile");
 		JButton logout = new JButton("Logout");
 
@@ -293,34 +293,34 @@ public class Frame {
 				JLabel confirmText = new JLabel("Are you sure?");
 				JButton yes = new JButton("Yes");
 				JButton no = new JButton("No");
-				
+
 				yes.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						serv.removeAccount(userName);
 						launchLogin();
 					}
 				});
-				
+
 				no.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						confirmation.dispose();
 					}
 				});
-				
+
 				JPanel buttonPanel = new JPanel();
 				JPanel aPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 				Box all = Box.createVerticalBox();
-				
+
 				buttonPanel.add(yes);
 				buttonPanel.add(no);
-				
+
 				aPanel.add(confirmText);
-				
+
 				all.add(aPanel);
 				all.add(buttonPanel);
-				
+
 				confirmation.add(all);
-				
+
 				///// Adding a bunch of JFrame setting to make it look better
 				confirmation.setTitle("User: " + userName);
 				confirmation.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -336,7 +336,7 @@ public class Frame {
 				confirmation.setAlwaysOnTop(true);
 				confirmation.setAlwaysOnTop(false);
 				/////
-				
+
 			}
 		});
 
@@ -369,6 +369,118 @@ public class Frame {
 		///// Add panels to frame
 		frame.add(input);
 		/////
+
+		formatFrame();
+	}
+
+	public void addPlayer() {
+		///// Removing possible old values
+		frame.dispose();
+		frame = new JFrame();
+		/////
+
+		JLabel fNameLabel = new JLabel("Player First Name:");
+		JTextField fName = new JTextField(8);
+		JLabel lNameLabel = new JLabel("Player Last Name:");
+		JTextField lName = new JTextField(8);
+		JLabel ageLabel = new JLabel("Player Age:");
+		JTextField age = new JTextField(8);
+		JLabel playerNumberLabel = new JLabel("Player Number:");
+		JTextField playerNumber = new JTextField(8);
+		JLabel salaryLabel = new JLabel("Player Salary:");
+		JTextField salary = new JTextField(8);
+		JLabel teamNameLabel = new JLabel("Player Team Name:");
+		JTextField teamName = new JTextField(8);
+		JLabel positionLabel = new JLabel("Player Position:");
+		JTextField position = new JTextField(8);
+		
+		JButton back = new JButton("Back To Teams");
+		back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				launchView();
+			}
+		});
+		
+		JButton addPlayer = new JButton("Add Player");
+		addPlayer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SQLDatabaseResult.addPlayer(dbService, fName.getText(), lName.getText(), age.getText(), playerNumber.getText(), salary.getText(), teamName.getText(), position.getText());
+			}
+		});
+
+		Box buttons = Box.createVerticalBox();
+		Box textBoxes = Box.createVerticalBox();
+		
+		buttons.add(back);
+		buttons.add(addPlayer);
+		
+		textBoxes.add(fNameLabel);
+		textBoxes.add(fName);
+		textBoxes.add(lNameLabel);
+		textBoxes.add(lName);
+		textBoxes.add(ageLabel);
+		textBoxes.add(age);
+		textBoxes.add(playerNumberLabel);
+		textBoxes.add(playerNumber);
+		textBoxes.add(salaryLabel);
+		textBoxes.add(salary);
+		textBoxes.add(teamNameLabel);
+		textBoxes.add(teamName);
+		textBoxes.add(positionLabel);
+		textBoxes.add(position);
+
+		Box all = Box.createHorizontalBox();
+		
+		all.add(textBoxes);
+		all.add(buttons);
+		
+		frame.add(all);
+
+		formatFrame();
+	}
+
+	public void deletePlayer() {
+		///// Removing possible old values
+		frame.dispose();
+		frame = new JFrame();
+		/////
+
+		JLabel fNameLabel = new JLabel("Player First Name:");
+		JTextField fName = new JTextField(8);
+		JLabel lNameLabel = new JLabel("Player Last Name:");
+		JTextField lName = new JTextField(8);
+		
+		JButton back = new JButton("Back To Teams");
+		back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				launchView();
+			}
+		});
+		
+		JButton deletePlayer = new JButton("Delete Player");
+		deletePlayer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SQLDatabaseResult.deletePlayer(dbService, fName.getText(), lName.getText());
+			}
+		});
+
+		Box buttons = Box.createVerticalBox();
+		Box textBoxes = Box.createVerticalBox();
+		
+		buttons.add(back);
+		buttons.add(deletePlayer);
+		
+		textBoxes.add(fNameLabel);
+		textBoxes.add(fName);
+		textBoxes.add(lNameLabel);
+		textBoxes.add(lName);
+
+		Box all = Box.createHorizontalBox();
+		
+		all.add(textBoxes);
+		all.add(buttons);
+		
+		frame.add(all);
 
 		formatFrame();
 	}
@@ -433,7 +545,7 @@ public class Frame {
 			}
 		});
 		/////
-		
+
 		///// Adding components to the JPanels
 		buttons.add(login);
 		buttons.add(register);
@@ -443,12 +555,12 @@ public class Frame {
 		textField.add(pass);
 		textField.add(showPass);
 		/////
-		
+
 		///// Adding JPanels to the JFrame
 		frame.add(textField, BorderLayout.NORTH);
 		frame.add(buttons, BorderLayout.SOUTH);
 		/////
-		
+
 		formatFrame();
 
 	}
@@ -537,6 +649,26 @@ public class Frame {
 		/////
 
 		///// Creating the button to refresh the JFrame
+		JButton add = new JButton("Add Player");
+		add.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addPlayer();
+			}
+		});
+		/////
+
+		///// Creating the button to refresh the JFrame
+		JButton delete = new JButton("Delete Player");
+		delete.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				deletePlayer();
+			}
+		});
+		/////
+
+		///// Creating the button to refresh the JFrame
 		JButton refresh = new JButton("Refresh Results");
 		refresh.addActionListener(new ActionListener() {
 			@Override
@@ -605,6 +737,8 @@ public class Frame {
 
 		///// Adding components to all the panels
 		refreshBtnPnl.add(userButton);
+		refreshBtnPnl.add(add);
+		refreshBtnPnl.add(delete);
 		refreshBtnPnl.add(searchButton);
 		refreshBtnPnl.add(refresh);
 		dropdownPnl.add(cb);
