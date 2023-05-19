@@ -107,6 +107,8 @@ public class Frame {
 		frame = new JFrame();
 		/////
 
+		System.out.println("Search Frame");
+		
 		JLabel fname = new JLabel("First Name:");
 		JTextField PFname = new JTextField(12);
 		JLabel lname = new JLabel("Last Name:");
@@ -196,7 +198,7 @@ public class Frame {
 		JButton userButton = new JButton("Edit Profile");
 		userButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Swapped to profile frame");
+//				System.out.println("Swapped to profile frame");
 				profileFrame();
 			}
 		});
@@ -244,6 +246,8 @@ public class Frame {
 		UserService serv = new UserService(dbService);
 		/////
 
+		System.out.println("Profile Frame");
+		
 		///// Create objects
 		JButton submit = new JButton("Update Profile");
 		JButton back = new JButton("Back To Teams");
@@ -380,6 +384,8 @@ public class Frame {
 		frame = new JFrame();
 		/////
 
+		System.out.println("Add player Frame");
+		
 		JLabel fNameLabel = new JLabel("Player First Name:");
 		JTextField fName = new JTextField(8);
 		JLabel lNameLabel = new JLabel("Player Last Name:");
@@ -412,6 +418,7 @@ public class Frame {
 				try {
 					if (!Arrays.asList(positions).contains(position.getText())) {
 						JOptionPane.showMessageDialog(null, "Enter a Valid Position");
+						return;
 					} else if ((salary.getText().equals(""))
 							|| (!((Integer) Integer.parseInt(salary.getText()) instanceof Integer))) {
 					} else if ((age.getText().equals(""))
@@ -471,6 +478,8 @@ public class Frame {
 		frame.dispose();
 		frame = new JFrame();
 		/////
+		
+		System.out.println("Delete Player Frame");
 
 		JLabel fNameLabel = new JLabel("Player First Name:");
 		JTextField fName = new JTextField(8);
@@ -523,6 +532,8 @@ public class Frame {
 		frame = new JFrame();
 		/////
 
+		System.out.println("Login Frame");
+		
 		///// Initializing componenets and setting the echochar to "*"
 		JTextField user = new JTextField(8);
 		JPasswordField pass = new JPasswordField(8);
@@ -605,6 +616,8 @@ public class Frame {
 		frame = new JFrame();
 		/////
 
+		System.out.println("View Frame");
+
 		///// To create the dropdown menu
 		String[] choices = SQLDatabaseResult.getTeams(dbService);
 		JComboBox<String> cb = new JComboBox<String>(choices);
@@ -613,7 +626,7 @@ public class Frame {
 		cb.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!cb.getSelectedItem().equals(tableName)) {
-					System.out.println("Changed view to " + cb.getSelectedItem() + " table.");
+//					System.out.println("Changed view to " + cb.getSelectedItem() + " table.");
 					viewTable((String) cb.getSelectedItem());
 				}
 			}
@@ -659,7 +672,7 @@ public class Frame {
 		JButton userButton = new JButton("Profile");
 		userButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Swapped to profile frame");
+//				System.out.println("Swapped to profile frame");
 				profileFrame();
 			}
 		});
@@ -669,7 +682,7 @@ public class Frame {
 		JButton searchButton = new JButton("Player Search");
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Swapped to search frame");
+//				System.out.println("Swapped to search frame");
 				searchFrame();
 			}
 		});
@@ -700,7 +713,7 @@ public class Frame {
 		refresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Refreshed " + tableName + " table.");
+//				System.out.println("Refreshed " + tableName + " table.");
 				viewTable(tableName);
 			}
 		});
