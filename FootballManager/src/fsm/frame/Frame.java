@@ -407,7 +407,7 @@ public class Frame {
 		JButton addPlayer = new JButton("Add Player");
 		addPlayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(age.getText().getClass());
+//				System.out.println(age.getText().getClass());
 				try {
 					if (!Arrays.asList(positions).contains(position.getText())) {
 						JOptionPane.showMessageDialog(null, "Enter a Valid Position");
