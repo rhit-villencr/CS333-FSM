@@ -36,7 +36,12 @@ public class SQLDatabaseResult {
 				rs.close();
 				results = cs.getMoreResults();
 			}
+			int returnValue = cs.getInt(1);
+			if (returnValue == 1) {
+				JOptionPane.showMessageDialog(null, "Player Does Not Exist");
+			}
 			cs.close();
+
 			String[] returnData = new String[row.size()];
 			for (int i = 0; i < row.size(); i++) {
 				returnData[i] = row.get(i);
@@ -113,7 +118,7 @@ public class SQLDatabaseResult {
 				JOptionPane.showMessageDialog(null, "Update Successful");
 			} else if (returnValue == 1) {
 				JOptionPane.showMessageDialog(null, "ERROR: Improper Team Name");
-			}else if (returnValue == 2) {
+			} else if (returnValue == 2) {
 				JOptionPane.showMessageDialog(null, "ERROR: Improper Name");
 			}
 			/////
@@ -205,7 +210,8 @@ public class SQLDatabaseResult {
 			String playerNumber, String salary, String teamName, String position) {
 		try {
 			///// Create a callable statement that calls the SPROC viewAll and set vars
-			CallableStatement cs = dbService.getConnection().prepareCall("{? = call createPlayer(?, ?, ?, ?, ?, ?, ?)}");
+			CallableStatement cs = dbService.getConnection()
+					.prepareCall("{? = call createPlayer(?, ?, ?, ?, ?, ?, ?)}");
 			cs.registerOutParameter(1, Types.INTEGER);
 			if (fName.equals("")) {
 				cs.setString(2, null);
@@ -230,50 +236,50 @@ public class SQLDatabaseResult {
 			} else {
 				cs.setString(5, salary);
 			}
-			
+
 			if (position.equals("")) {
 				cs.setString(6, null);
 			} else {
 				cs.setString(6, position);
 			}
-			
+
 			if (playerNumber.equals("")) {
 				cs.setString(7, null);
 			} else {
 				cs.setString(7, playerNumber);
 			}
-			
+
 			if (age.equals("")) {
 				cs.setString(8, null);
 			} else {
 				cs.setString(8, age);
 			}
-			
+
 			cs.execute();
-			
+
 			int returnValue = cs.getInt(1);
-			
-			if(returnValue == 0) {
+
+			if (returnValue == 0) {
 				JOptionPane.showMessageDialog(null, "Successfully Added Player");
-			}else if(returnValue == 1) {
+			} else if (returnValue == 1) {
 				JOptionPane.showMessageDialog(null, "First Name Cannot Be Null");
-			}else if(returnValue == 2) {
+			} else if (returnValue == 2) {
 				JOptionPane.showMessageDialog(null, "Last Name Cannot Be Null");
-			}else if(returnValue == 3) {
+			} else if (returnValue == 3) {
 				JOptionPane.showMessageDialog(null, "Already Exists");
-			}else if(returnValue == 4) {
+			} else if (returnValue == 4) {
 				JOptionPane.showMessageDialog(null, "Position Cannot Be Null");
-			}else if(returnValue == 5) {
+			} else if (returnValue == 5) {
 				JOptionPane.showMessageDialog(null, "Team Cannot Be Null");
-			}else if(returnValue == 6) {
-				JOptionPane.showMessageDialog(null, "Bad Values");
+			} else if (returnValue == 6) {
+				JOptionPane.showMessageDialog(null, "Not a Team");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 	}
-	
+
 	public static void deletePlayer(DatabaseConnectionService dbService, String fName, String lName) {
 		try {
 			///// Create a callable statement that calls the SPROC viewAll and set vars
@@ -290,22 +296,21 @@ public class SQLDatabaseResult {
 			} else {
 				cs.setString(3, lName);
 			}
-			
+
 			cs.execute();
-			
+
 			int returnValue = cs.getInt(1);
-			
-			if(returnValue == 0) {
+
+			if (returnValue == 0) {
 				JOptionPane.showMessageDialog(null, "Successfully Removed Player");
-			}else if(returnValue == 1) {
+			} else if (returnValue == 1) {
 				JOptionPane.showMessageDialog(null, "Player Doesn't Exist");
-			}else if(returnValue == 2) {
+			} else if (returnValue == 2) {
 				JOptionPane.showMessageDialog(null, "First Name Cannot Be Null");
-			}
-			else if(returnValue == 3) {
+			} else if (returnValue == 3) {
 				JOptionPane.showMessageDialog(null, "Last Name Cannot Be Null");
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

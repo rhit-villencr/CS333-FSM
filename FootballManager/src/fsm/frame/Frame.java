@@ -393,27 +393,53 @@ public class Frame {
 		JTextField teamName = new JTextField(8);
 		JLabel positionLabel = new JLabel("Player Position:");
 		JTextField position = new JTextField(8);
-		
+
 		JButton back = new JButton("Back To Teams");
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				launchView();
 			}
 		});
-		
+
+		String[] positions = { "LT", "LG", "C", "RG", "RT", "TE", "WR", "RB", "QB", "FB", "IDL", "EDGE", "LB", "CB",
+				"S", "LS", "P", "K" };
+
 		JButton addPlayer = new JButton("Add Player");
 		addPlayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SQLDatabaseResult.addPlayer(dbService, fName.getText(), lName.getText(), age.getText(), playerNumber.getText(), salary.getText(), teamName.getText(), position.getText());
+				System.out.println(age.getText().getClass());
+				try {
+					if (!Arrays.asList(positions).contains(position.getText())) {
+						JOptionPane.showMessageDialog(null, "Enter a Valid Position");
+					} else if ((salary.getText().equals(""))
+							|| (!((Integer) Integer.parseInt(salary.getText()) instanceof Integer))) {
+					} else if ((age.getText().equals(""))
+							|| (!((Integer) Integer.parseInt(age.getText()) instanceof Integer))) {
+					} else if ((playerNumber.getText().equals(""))
+							|| (!((Integer) Integer.parseInt(playerNumber.getText()) instanceof Integer))) {
+					}
+					if (!playerNumber.getText().equals("") && Integer.parseInt(playerNumber.getText()) >= 100) {
+						JOptionPane.showMessageDialog(null, "Player Number Must Be Less Than 100");
+
+					} else if (!age.getText().equals("") && Integer.parseInt(age.getText()) >= 100) {
+						JOptionPane.showMessageDialog(null, "Age Must Be Less Than 100");
+					} else {
+						SQLDatabaseResult.addPlayer(dbService, fName.getText(), lName.getText(), age.getText(),
+								playerNumber.getText(), salary.getText(), teamName.getText(), position.getText());
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Age, Salary, and Number Must Be An INT");
+				}
 			}
 		});
 
 		Box buttons = Box.createVerticalBox();
 		Box textBoxes = Box.createVerticalBox();
-		
+
 		buttons.add(back);
 		buttons.add(addPlayer);
-		
+
 		textBoxes.add(fNameLabel);
 		textBoxes.add(fName);
 		textBoxes.add(lNameLabel);
@@ -430,10 +456,10 @@ public class Frame {
 		textBoxes.add(position);
 
 		Box all = Box.createHorizontalBox();
-		
+
 		all.add(textBoxes);
 		all.add(buttons);
-		
+
 		frame.add(all);
 
 		formatFrame();
@@ -449,14 +475,14 @@ public class Frame {
 		JTextField fName = new JTextField(8);
 		JLabel lNameLabel = new JLabel("Player Last Name:");
 		JTextField lName = new JTextField(8);
-		
+
 		JButton back = new JButton("Back To Teams");
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				launchView();
 			}
 		});
-		
+
 		JButton deletePlayer = new JButton("Delete Player");
 		deletePlayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -466,20 +492,20 @@ public class Frame {
 
 		Box buttons = Box.createVerticalBox();
 		Box textBoxes = Box.createVerticalBox();
-		
+
 		buttons.add(back);
 		buttons.add(deletePlayer);
-		
+
 		textBoxes.add(fNameLabel);
 		textBoxes.add(fName);
 		textBoxes.add(lNameLabel);
 		textBoxes.add(lName);
 
 		Box all = Box.createHorizontalBox();
-		
+
 		all.add(textBoxes);
 		all.add(buttons);
-		
+
 		frame.add(all);
 
 		formatFrame();
