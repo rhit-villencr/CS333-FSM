@@ -297,6 +297,7 @@ public class Frame {
 				yes.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						serv.removeAccount(userName);
+						confirmation.dispose();
 						launchLogin();
 					}
 				});

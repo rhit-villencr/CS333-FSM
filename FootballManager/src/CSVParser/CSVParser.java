@@ -33,6 +33,26 @@ public class CSVParser {
 	// Chase PC
 //	static String csvFolder = "A:\\280\\CS333-FSM\\FootballManager\\src\\CSVParser\\CSV Files\\";
 
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		long startTime = System.nanoTime();
+		
+		connect();
+		insertTeam();
+		insertPlayer();
+		insertOffensivePlayer();
+		insertDefensivePlayer();
+		insertSpecialTeamsPlayer();
+		insertStaff();
+		
+		long endTime = System.nanoTime();
+		long totalTime = endTime - startTime;
+		System.out.println(totalTime / 1000000000 + " seconds to populate databse.");
+	}
+	
 	public static void connect() {
 		String serverName = "";
 		String databaseName = "";
@@ -73,23 +93,6 @@ public class CSVParser {
 			System.exit(0);
 		}
 		/////
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		long startTime = System.nanoTime();
-		connect();
-		insertTeam();
-		insertPlayer();
-		insertOffensivePlayer();
-		insertDefensivePlayer();
-		insertSpecialTeamsPlayer();
-		insertStaff();
-		long endTime = System.nanoTime();
-		long totalTime = endTime - startTime;
-		System.out.println(totalTime / 1000000000 + " seconds to populate databse.");
 	}
 
 	public static void insertOffensivePlayer() {
