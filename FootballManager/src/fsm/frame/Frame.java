@@ -428,7 +428,7 @@ public class Frame {
 								playerNumber.getText(), salary.getText(), teamName.getText(), position.getText());
 					}
 				} catch (Exception ex) {
-					ex.printStackTrace();
+//					ex.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Age, Salary, and Number Must Be An INT");
 				}
 			}
